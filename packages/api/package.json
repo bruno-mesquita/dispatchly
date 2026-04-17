@@ -1,0 +1,27 @@
+{
+  "name": "@dispatchly/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@dispatchly/auth": "workspace:*",
+    "@dispatchly/db": "workspace:*",
+    "@dispatchly/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@dispatchly/config": "workspace:*",
+    "elysia": "catalog:",
+    "typescript": "^5"
+  }
+}
