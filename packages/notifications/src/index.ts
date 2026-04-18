@@ -29,3 +29,14 @@ export function getProvider(
 			return resendProvider;
 	}
 }
+
+export {
+	type JobData,
+	emailQueue,
+	smsQueue,
+	pushQueue,
+	retryQueue,
+	addToQueue,
+	addRetryJob,
+} from "./queue/worker.js";
+export { worker } from "./queue/worker.js";
