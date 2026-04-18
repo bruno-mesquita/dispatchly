@@ -59,7 +59,12 @@ Dispatchly é um SaaS de notificações multi-canal que permite organizações e
 | API | tRPC | 11.16.0 |
 | Queue | BullMQ | - |
 | Queue Storage | Redis | - |
-| Payments | Stripe | - |
+| Payments | Stripe + @better-auth/stripe | 1.4.20 |
+
+### Dependencies a Instalar (Fase 2)
+```bash
+npm install @better-auth/stripe@^1.4.20 stripe@^22.0.0
+```
 
 ---
 

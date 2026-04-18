@@ -12,14 +12,23 @@
 
 ## Fase 2: Auth (próxima)
 
-### Task 2.1: Configurar Better Auth plugins
+### Task 2.1: Instalar dependências dos plugins
+**Arquivo:** `package.json` (catalog)
+
+```json
+"@better-auth/stripe": "^1.4.20",
+"@better-auth/oauth-provider": "^1.0.0",
+"stripe": "^22.0.0"
+```
+
+### Task 2.2: Configurar Better Auth plugins
 **Arquivo:** `packages/auth/src/index.ts`
 
-Plugins a adicionar:
-- organization()
-- admin()
-- oauth()
-- stripe()
+```typescript
+import { admin } from "better-auth/plugins";
+import { organization } from "better-auth/plugins";
+// + stripe após instalar deps
+```
 **Arquivo:** `packages/db/docker-compose.yml`
 
 Adicionar serviço redis:
