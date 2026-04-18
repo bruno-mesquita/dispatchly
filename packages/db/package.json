@@ -1,28 +1,31 @@
 {
-  "name": "@dispatchly/db",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "default": "./src/*.ts"
-    }
-  },
-  "scripts": {
-    "db:start": "docker compose up -d",
-    "db:watch": "docker compose up",
-    "db:stop": "docker compose stop",
-    "db:down": "docker compose down"
-  },
-  "dependencies": {
-    "@dispatchly/env": "workspace:*",
-    "dotenv": "catalog:",
-    "mongoose": "^8.14.0",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@dispatchly/config": "workspace:*",
-    "typescript": "^5"
-  }
+	"name": "@dispatchly/db",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {
+		"db:start": "docker compose up -d mongodb",
+		"db:redis:start": "docker compose up -d redis",
+		"db:redis:stop": "docker compose stop redis",
+		"db:start:all": "docker compose up -d",
+		"db:watch": "docker compose up",
+		"db:stop": "docker compose stop",
+		"db:down": "docker compose down"
+	},
+	"dependencies": {
+		"@dispatchly/env": "workspace:*",
+		"dotenv": "catalog:",
+		"mongoose": "^8.14.0",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@dispatchly/config": "workspace:*",
+		"typescript": "^5"
+	}
 }

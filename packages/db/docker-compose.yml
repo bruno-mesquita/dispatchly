@@ -19,5 +19,16 @@ services:
       retries: 5
     restart: unless-stopped
 
+redis:
+    image: redis:7-alpine
+    container_name: dispatchly-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - dispatchly_redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
 volumes:
   dispatchly_mongodb_data:
+  dispatchly_redis_data:
