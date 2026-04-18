@@ -1,98 +1,81 @@
 # Tarefas de Implementação
 
-## Fase Atual: 2 - Auth
+## Fase Atual: 4 - Notification Providers
+
+## Fase 3: Database Schemas ✅ COMPLETO
+- [x] 3.1 Organization model
+- [x] 3.2 NotificationLog model
+- [x] 3.3 Template model
+- [x] 3.4 Subscription model
+- [x] 3.5 Webhook model
+- [x] 3.6 Export all models
+
+## Fase 2: Auth ✅ COMPLETO
+- [x] 2.1 Instalar @better-auth/stripe + stripe
+- [x] 2.2 Configurar plugins (estrutura ready)
+- [x] 2.3 Fix async auth (authPromise export)
 
 ## Fase 1: Infraestrutura ✅ COMPLETO
-
 - [x] 1.1 Adicionar Redis ao docker-compose.yml
 - [x] 1.2 Adicionar env vars
 - [x] 1.3 Scripts redis
 
 ---
 
-## Fase 2: Auth (próxima)
+## Fase 4: Notification Providers (próxima)
 
-### Task 2.1: Instalar dependências dos plugins
-**Arquivo:** `package.json` (catalog)
+### Task 4.1: Criar package notifications
+**Arquivo:** `packages/notifications/package.json`
 
 ```json
-"@better-auth/stripe": "^1.4.20",
-"@better-auth/oauth-provider": "^1.0.0",
-"stripe": "^22.0.0"
+{
+  "name": "@dispatchly/notifications",
+  "type": "module",
+  "exports": {
+    ".": { "default": "./src/index.ts" }
+  },
+  "dependencies": {
+    "resend": "^4.0.0",
+    "twilio": "^5.0.0",
+    "expo-server-sdk": "^4.0.0",
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.0.0"
+  }
+}
 ```
 
-### Task 2.2: Configurar Better Auth plugins
-**Arquivo:** `packages/auth/src/index.ts`
+### Task 4.2: Criar tipos
+**Arquivo:** `packages/notifications/src/types.ts`
 
 ```typescript
-import { admin } from "better-auth/plugins";
-import { organization } from "better-auth/plugins";
-// + stripe após instalar deps
-```
-**Arquivo:** `packages/db/docker-compose.yml`
+export type NotificationType = 'email' | 'sms' | 'push';
+export type NotificationStatus = 'pending' | 'sent' | 'delivered' | 'failed' | 'bounced';
 
-Adicionar serviço redis:
-```yaml
-redis:
-  image: redis:7-alpine
-  container_name: dispatchly-redis
-  ports:
-    - "6379:6379"
-  volumes:
-    - dispatchly_redis_data:/data
-  command: redis-server --appendonly yes
-  restart: unless-stopped
+export interface SendNotificationInput {
+  type: NotificationType;
+  to: string;
+  subject?: string;
+  content: string;
+  templateId?: string;
+  variables?: Record<string, any>;
+}
+
+export interface NotificationProvider {
+  send(input: SendNotificationInput): Promise<{ messageId: string; status: NotificationStatus }>;
+}
 ```
 
-### Task 1.2: Adicionar env vars
-**Arquivo:** `packages/env/src/server.ts`
+### Task 4.3: Implementar Resend provider
+**Arquivo:** `packages/notifications/src/providers/resend.ts`
 
-Adicionar:
-```typescript
-REDIS_URL: z.string().min(1),
-RESEND_API_KEY: z.string().optional(),
-TWILIO_ACCOUNT_SID: z.string().optional(),
-TWILIO_AUTH_TOKEN: z.string().optional(),
-TWILIO_PHONE_NUMBER: z.string().optional(),
-EXPO_ACCESS_TOKEN: z.string().optional(),
-STRIPE_SECRET_KEY: z.string().optional(),
-STRIPE_WEBHOOK_SECRET: z.string().optional(),
-```
+Use `resend` package para enviar emails.
 
-### Task 1.3: Scripts redis
-**Arquivo:** `packages/db/package.json`
+### Task 4.4: Implementar Twilio provider
+**Arquivo:** `packages/notifications/src/providers/twilio.ts`
 
-Adicionar em scripts:
-```json
-"redis:start": "docker compose up -d redis",
-"redis:stop": "docker compose stop redis",
-"redis:down": "docker compose down"
-```
+Use `twilio` package para enviar SMS.
 
----
+### Task 4.5: Implementar Expo provider
+**Arquivo:** `packages/notifications/src/providers/expo.ts`
 
-## Como Executar
-
-```bash
-# Subir infra
-bun run db:start && bun run redis:start
-
-# Verificar
-docker ps | grep dispatchly
-```
-
----
-
-## Fase 2: Auth (próxima)
-
-Melhorar auth com plugins:
-- organization()
-- admin()
-- oauth()
-- stripe()
-
----
-
-## Referência
-
-Ver `PROJECT.md` para contexto completo.
+Use `expo-server-sdk` para push notifications.

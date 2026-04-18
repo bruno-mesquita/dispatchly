@@ -11,6 +11,7 @@ export class TwilioProvider implements NotificationProvider {
 	private client: Twilio;
 
 	constructor() {
+		// @ts-expect-error - Twilio SDK type mismatch
 		this.client = new Twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
 	}
 
