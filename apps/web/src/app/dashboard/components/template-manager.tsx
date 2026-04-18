@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { trpc } from "@/utils/trpc";
 import { Button } from "@dispatchly/ui/components/button";
@@ -20,15 +21,6 @@ import {
 	SelectValue,
 } from "@dispatchly/ui/components/select";
 
-interface Template {
-	_id: { toString(): string };
-	name: string;
-	type: "email" | "sms" | "push";
-	subject?: string;
-	content: string;
-	isActive?: boolean;
-}
-
 export function TemplateManager() {
 	const [name, setName] = useState("");
 	const [type, setType] = useState<"email" | "sms" | "push">("email");
@@ -36,10 +28,20 @@ export function TemplateManager() {
 	const [content, setContent] = useState("");
 	const [isEditing, setIsEditing] = useState<string | null>(null);
 
-	const templates = trpc.templates.list.useQuery();
-	const createMutation = trpc.templates.create.useMutation();
-	const updateMutation = trpc.templates.update.useMutation();
-	const deleteMutation = trpc.templates.delete.useMutation();
+	const templates = useQuery(trpc.templates.list.queryOptions({}) as any);
+
+	const createMutation = useMutation({
+		mutationFn: async (input: any) =>
+			(trpc.templates.create as any).mutate(input),
+	});
+	const updateMutation = useMutation({
+		mutationFn: async (input: any) =>
+			(trpc.templates.update as any).mutate(input),
+	});
+	const deleteMutation = useMutation({
+		mutationFn: async (input: any) =>
+			(trpc.templates.delete as any).mutate(input),
+	});
 
 	const handleCreate = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -166,7 +168,7 @@ export function TemplateManager() {
 						<div className="flex gap-2">
 							<Button
 								type="submit"
-								disabled={createMutation.isLoading || updateMutation.isLoading}
+								disabled={createMutation.isPending || updateMutation.isPending}
 							>
 								{isEditing ? "Atualizar" : "Criar"}
 							</Button>
@@ -186,7 +188,7 @@ export function TemplateManager() {
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-2">
-						{templates.data?.map((t: any) => (
+						{(templates.data as any[])?.map((t: any) => (
 							<div
 								key={t._id.toString()}
 								className="flex items-center justify-between p-3 border rounded"
@@ -216,7 +218,7 @@ export function TemplateManager() {
 								</div>
 							</div>
 						))}
-						{templates.data?.length === 0 && (
+						{(templates.data as any[])?.length === 0 && (
 							<p className="text-muted-foreground">
 								Nenhum template encontrado
 							</p>

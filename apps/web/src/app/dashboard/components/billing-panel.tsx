@@ -40,9 +40,10 @@ const PLANS = [
 
 export function BillingPanel() {
 	const planQuery = useQuery(trpc.billing.getPlan.queryOptions() as any);
-	const createCheckout = useMutation(
-		trpc.billing.createCheckoutSession.mutationOptions() as any,
-	);
+	const createCheckout = useMutation({
+		mutationFn: async (input: any) =>
+			(trpc.billing.createCheckoutSession as any).mutate(input),
+	});
 
 	const handleUpgrade = async (planId: string) => {
 		try {
