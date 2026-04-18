@@ -21,4 +21,5 @@ export function createAuth() {
 	});
 }
 
-export const auth = createAuth();
+const authPromise = createAuth();
+export { authPromise as auth };
