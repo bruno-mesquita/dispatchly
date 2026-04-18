@@ -13,6 +13,7 @@ export const env = createEnv({
 			.default("development"),
 		REDIS_URL: z.string().min(1),
 		RESEND_API_KEY: z.string().optional(),
+		RESEND_FROM_EMAIL: z.string().optional(),
 		TWILIO_ACCOUNT_SID: z.string().optional(),
 		TWILIO_AUTH_TOKEN: z.string().optional(),
 		TWILIO_PHONE_NUMBER: z.string().optional(),

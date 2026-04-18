@@ -1,0 +1,24 @@
+{
+	"name": "@dispatchly/notifications",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./types": {
+			"default": "./src/types/index.ts"
+		}
+	},
+	"dependencies": {
+		"@dispatchly/env": "workspace:*",
+		"resend": "^4.0.0",
+		"twilio": "^5.0.0",
+		"expo-server-sdk": "^4.0.0",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@dispatchly/config": "workspace:*",
+		"typescript": "^5"
+	}
+}
