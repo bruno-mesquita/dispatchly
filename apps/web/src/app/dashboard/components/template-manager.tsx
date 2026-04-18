@@ -1,0 +1,229 @@
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { trpc } from "@/utils/trpc";
+import { Button } from "@dispatchly/ui/components/button";
+import { Input } from "@dispatchly/ui/components/input";
+import { Label } from "@dispatchly/ui/components/label";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@dispatchly/ui/components/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@dispatchly/ui/components/select";
+
+interface Template {
+	_id: { toString(): string };
+	name: string;
+	type: "email" | "sms" | "push";
+	subject?: string;
+	content: string;
+	isActive?: boolean;
+}
+
+export function TemplateManager() {
+	const [name, setName] = useState("");
+	const [type, setType] = useState<"email" | "sms" | "push">("email");
+	const [subject, setSubject] = useState("");
+	const [content, setContent] = useState("");
+	const [isEditing, setIsEditing] = useState<string | null>(null);
+
+	const templates = trpc.templates.list.useQuery();
+	const createMutation = trpc.templates.create.useMutation();
+	const updateMutation = trpc.templates.update.useMutation();
+	const deleteMutation = trpc.templates.delete.useMutation();
+
+	const handleCreate = async (e: React.FormEvent) => {
+		e.preventDefault();
+		try {
+			await createMutation.mutateAsync({
+				name,
+				type,
+				subject: type === "email" ? subject : undefined,
+				content,
+			});
+			toast.success("Template criado!");
+			setName("");
+			setSubject("");
+			setContent("");
+		} catch (error: any) {
+			toast.error(error.message);
+		}
+	};
+
+	const handleUpdate = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!isEditing) return;
+		try {
+			await updateMutation.mutateAsync({
+				id: isEditing,
+				name,
+				subject,
+				content,
+			});
+			toast.success("Template atualizado!");
+			setIsEditing(null);
+		} catch (error: any) {
+			toast.error(error.message);
+		}
+	};
+
+	const handleDelete = async (id: string) => {
+		if (confirm("Deseja deletar este template?")) {
+			try {
+				await deleteMutation.mutateAsync({ id });
+				toast.success("Template deletado!");
+			} catch (error: any) {
+				toast.error(error.message);
+			}
+		}
+	};
+
+	const startEdit = (template: any) => {
+		setIsEditing(template._id.toString());
+		setName(template.name);
+		setType(template.type);
+		setSubject(template.subject || "");
+		setContent(template.content);
+	};
+
+	const cancelEdit = () => {
+		setIsEditing(null);
+		setName("");
+		setSubject("");
+		setContent("");
+		setType("email");
+	};
+
+	return (
+		<div className="space-y-6">
+			<Card>
+				<CardHeader>
+					<CardTitle>
+						{isEditing ? "Editar Template" : "Criar Template"}
+					</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<form
+						onSubmit={isEditing ? handleUpdate : handleCreate}
+						className="space-y-4"
+					>
+						<div className="space-y-2">
+							<Label>Nome</Label>
+							<Input
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								placeholder="Nome do template"
+								required
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label>Tipo</Label>
+							<Select
+								value={type}
+								onValueChange={(v: string | null) =>
+									v && setType(v as typeof type)
+								}
+							>
+								<SelectTrigger>
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="email">Email</SelectItem>
+									<SelectItem value="sms">SMS</SelectItem>
+									<SelectItem value="push">Push</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+						{type === "email" && (
+							<div className="space-y-2">
+								<Label>Assunto</Label>
+								<Input
+									value={subject}
+									onChange={(e) => setSubject(e.target.value)}
+									placeholder="Assunto do email"
+								/>
+							</div>
+						)}
+						<div className="space-y-2">
+							<Label>Conteúdo</Label>
+							<textarea
+								className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+								value={content}
+								onChange={(e) => setContent(e.target.value)}
+								placeholder="Use {{variavel}} para dynamic variables"
+								required
+							/>
+						</div>
+						<div className="flex gap-2">
+							<Button
+								type="submit"
+								disabled={createMutation.isLoading || updateMutation.isLoading}
+							>
+								{isEditing ? "Atualizar" : "Criar"}
+							</Button>
+							{isEditing && (
+								<Button type="button" variant="outline" onClick={cancelEdit}>
+									Cancelar
+								</Button>
+							)}
+						</div>
+					</form>
+				</CardContent>
+			</Card>
+
+			<Card>
+				<CardHeader>
+					<CardTitle>Templates</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div className="space-y-2">
+						{templates.data?.map((t: any) => (
+							<div
+								key={t._id.toString()}
+								className="flex items-center justify-between p-3 border rounded"
+							>
+								<div>
+									<p className="font-medium">{t.name}</p>
+									<p className="text-sm text-muted-foreground">
+										{t.type} -{" "}
+										{t.subject || (t.content && t.content.slice(0, 30))}...
+									</p>
+								</div>
+								<div className="flex gap-2">
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => startEdit(t)}
+									>
+										Editar
+									</Button>
+									<Button
+										variant="destructive"
+										size="sm"
+										onClick={() => handleDelete(t._id.toString())}
+									>
+										Deletar
+									</Button>
+								</div>
+							</div>
+						))}
+						{templates.data?.length === 0 && (
+							<p className="text-muted-foreground">
+								Nenhum template encontrado
+							</p>
+						)}
+					</div>
+				</CardContent>
+			</Card>
+		</div>
+	);
+}
