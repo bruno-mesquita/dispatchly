@@ -1,24 +1,24 @@
 {
-  "name": "@dispatchly/auth",
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "default": "./src/*.ts"
-    }
-  },
-  "scripts": {},
-  "dependencies": {
-    "@dispatchly/db": "workspace:*",
-    "@dispatchly/env": "workspace:*",
-    "better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@dispatchly/config": "workspace:*",
-    "typescript": "^5"
-  }
+	"name": "@dispatchly/auth",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {},
+	"dependencies": {
+		"@dispatchly/db": "workspace:*",
+		"@dispatchly/env": "workspace:*",
+		"better-auth": "catalog:",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@dispatchly/config": "workspace:*",
+		"typescript": "^5"
+	}
 }

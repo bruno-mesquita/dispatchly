@@ -1,19 +1,15 @@
-import { z } from "zod";
-import { router, protectedProcedure, publicProcedure } from "../index.js";
+import { checkQuota, PLANS } from "@dispatchly/billing";
+import { NotificationLog } from "@dispatchly/db";
 import { addToQueue, type JobData } from "@dispatchly/notifications";
 import {
+	applyTemplate,
 	createTemplate,
-	getTemplatesByOrg,
 	deleteTemplate,
-} from "@dispatchly/templates";
-import { applyTemplate } from "@dispatchly/templates";
-import {
-	getTemplateById,
+	getTemplatesByOrg,
 	updateTemplate,
-	type CreateTemplateInput,
 } from "@dispatchly/templates";
-import { NotificationLog } from "@dispatchly/db";
-import { PLANS, checkQuota } from "@dispatchly/billing";
+import { z } from "zod";
+import { protectedProcedure, router } from "../index.js";
 
 export const notificationsRouter = router({
 	send: protectedProcedure

@@ -1,19 +1,19 @@
-export { resendProvider, ResendProvider } from "./providers/resend.js";
-export { twilioProvider, TwilioProvider } from "./providers/twilio.js";
-export { expoProvider, ExpoProvider } from "./providers/expo.js";
+export { ExpoProvider, expoProvider } from "./providers/expo.js";
+export { ResendProvider, resendProvider } from "./providers/resend.js";
+export { TwilioProvider, twilioProvider } from "./providers/twilio.js";
 
 export type {
-	NotificationType,
-	NotificationStatus,
-	SendNotificationInput,
-	ProviderResponse,
 	NotificationProvider,
+	NotificationStatus,
+	NotificationType,
+	ProviderResponse,
+	SendNotificationInput,
 } from "./types/index.js";
 
-import type { NotificationProvider } from "./types/index.js";
+import { expoProvider } from "./providers/expo.js";
 import { resendProvider } from "./providers/resend.js";
 import { twilioProvider } from "./providers/twilio.js";
-import { expoProvider } from "./providers/expo.js";
+import type { NotificationProvider } from "./types/index.js";
 
 export function getProvider(
 	type: "email" | "sms" | "push",
@@ -31,12 +31,12 @@ export function getProvider(
 }
 
 export {
-	type JobData,
+	addRetryJob,
+	addToQueue,
 	emailQueue,
-	smsQueue,
+	type JobData,
 	pushQueue,
 	retryQueue,
-	addToQueue,
-	addRetryJob,
+	smsQueue,
+	worker,
 } from "./queue/worker.js";
-export { worker } from "./queue/worker.js";

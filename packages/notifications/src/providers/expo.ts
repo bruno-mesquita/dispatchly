@@ -1,9 +1,9 @@
-import { Expo } from "expo-server-sdk";
 import { env } from "@dispatchly/env/server";
+import { Expo } from "expo-server-sdk";
 import type {
-	SendNotificationInput,
-	ProviderResponse,
 	NotificationProvider,
+	ProviderResponse,
+	SendNotificationInput,
 } from "../types/index.js";
 
 export class ExpoProvider implements NotificationProvider {

@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { trpc } from "@/utils/trpc";
 import { Button } from "@dispatchly/ui/components/button";
-import { Input } from "@dispatchly/ui/components/input";
-import { Label } from "@dispatchly/ui/components/label";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
+import { Input } from "@dispatchly/ui/components/input";
+import { Label } from "@dispatchly/ui/components/label";
 import {
 	Select,
 	SelectContent,
@@ -20,6 +16,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@dispatchly/ui/components/select";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { trpc } from "@/utils/trpc";
 
 export function SendNotification() {
 	const [type, setType] = useState<"email" | "sms" | "push">("email");

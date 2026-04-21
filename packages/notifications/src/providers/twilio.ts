@@ -1,9 +1,9 @@
-import Twilio from "twilio";
 import { env } from "@dispatchly/env/server";
+import Twilio from "twilio";
 import type {
-	SendNotificationInput,
-	ProviderResponse,
 	NotificationProvider,
+	ProviderResponse,
+	SendNotificationInput,
 } from "../types/index.js";
 
 export class TwilioProvider implements NotificationProvider {

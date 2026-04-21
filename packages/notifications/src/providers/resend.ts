@@ -1,9 +1,9 @@
-import { Resend } from "resend";
 import { env } from "@dispatchly/env/server";
+import { Resend } from "resend";
 import type {
-	SendNotificationInput,
-	ProviderResponse,
 	NotificationProvider,
+	ProviderResponse,
+	SendNotificationInput,
 } from "../types/index.js";
 
 export class ResendProvider implements NotificationProvider {

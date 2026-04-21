@@ -123,8 +123,11 @@
       "name": "@dispatchly/api",
       "dependencies": {
         "@dispatchly/auth": "workspace:*",
+        "@dispatchly/billing": "workspace:*",
         "@dispatchly/db": "workspace:*",
         "@dispatchly/env": "workspace:*",
+        "@dispatchly/notifications": "workspace:*",
+        "@dispatchly/templates": "workspace:*",
         "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
         "dotenv": "catalog:",

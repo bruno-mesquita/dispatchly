@@ -1,14 +1,14 @@
 "use client";
 
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { trpc } from "@/utils/trpc";
+import { Button } from "@dispatchly/ui/components/button";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
-import { Button } from "@dispatchly/ui/components/button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { trpc } from "@/utils/trpc";
 
 const PLANS = [
 	{ id: "free", name: "Free", price: "R$ 0", emails: 100, sms: 10, push: 50 },
@@ -69,7 +69,7 @@ export function BillingPanel() {
 					<CardTitle>Plano Atual</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-2xl font-bold">{currentPlan.name}</p>
+					<p className="font-bold text-2xl">{currentPlan.name}</p>
 					<p className="text-muted-foreground">
 						{currentPlan.emails === -1 ? "Ilimitado" : currentPlan.emails}{" "}
 						emails,
@@ -90,8 +90,8 @@ export function BillingPanel() {
 							<CardTitle>{plan.name}</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<p className="text-xl font-bold">{plan.price}/mês</p>
-							<ul className="text-sm text-muted-foreground mt-2 space-y-1">
+							<p className="font-bold text-xl">{plan.price}/mês</p>
+							<ul className="mt-2 space-y-1 text-muted-foreground text-sm">
 								<li>{plan.emails === -1 ? "Ilimitado" : plan.emails} emails</li>
 								<li>{plan.sms === -1 ? "Ilimitado" : plan.sms} SMS</li>
 								<li>{plan.push === -1 ? "Ilimitado" : plan.push} push</li>

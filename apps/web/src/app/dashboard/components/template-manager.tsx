@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { trpc } from "@/utils/trpc";
 import { Button } from "@dispatchly/ui/components/button";
-import { Input } from "@dispatchly/ui/components/input";
-import { Label } from "@dispatchly/ui/components/label";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
+import { Input } from "@dispatchly/ui/components/input";
+import { Label } from "@dispatchly/ui/components/label";
 import {
 	Select,
 	SelectContent,
@@ -20,6 +16,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@dispatchly/ui/components/select";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { trpc } from "@/utils/trpc";
 
 export function TemplateManager() {
 	const [name, setName] = useState("");
@@ -191,13 +191,12 @@ export function TemplateManager() {
 						{(templates.data as any[])?.map((t: any) => (
 							<div
 								key={t._id.toString()}
-								className="flex items-center justify-between p-3 border rounded"
+								className="flex items-center justify-between rounded border p-3"
 							>
 								<div>
 									<p className="font-medium">{t.name}</p>
-									<p className="text-sm text-muted-foreground">
-										{t.type} -{" "}
-										{t.subject || (t.content && t.content.slice(0, 30))}...
+									<p className="text-muted-foreground text-sm">
+										{t.type} - {t.subject || t.content?.slice(0, 30)}...
 									</p>
 								</div>
 								<div className="flex gap-2">

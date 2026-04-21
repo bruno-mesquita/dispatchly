@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { trpc } from "@/utils/trpc";
 import { Button } from "@dispatchly/ui/components/button";
-import { Input } from "@dispatchly/ui/components/input";
-import { Label } from "@dispatchly/ui/components/label";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
+import { Input } from "@dispatchly/ui/components/input";
+import { Label } from "@dispatchly/ui/components/label";
 import {
 	Select,
 	SelectContent,
@@ -20,6 +16,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@dispatchly/ui/components/select";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { trpc } from "@/utils/trpc";
 
 export function BatchNotifications() {
 	const [type, setType] = useState<"email" | "sms" | "push">("email");
@@ -27,8 +27,8 @@ export function BatchNotifications() {
 	const [subject, setSubject] = useState("");
 	const [content, setContent] = useState("");
 	const [templateId, setTemplateId] = useState("");
-	const [sentCount, setSentCount] = useState(0);
-	const [failedCount, setFailedCount] = useState(0);
+	const [_sentCount, setSentCount] = useState(0);
+	const [_failedCount, setFailedCount] = useState(0);
 
 	const sendMutation = useMutation(
 		trpc.notifications.send.mutationOptions() as any,

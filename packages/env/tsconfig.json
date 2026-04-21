@@ -1,3 +1,3 @@
 {
-  "extends": "@dispatchly/config/tsconfig.base.json"
+	"extends": "@dispatchly/config/tsconfig.base.json"
 }

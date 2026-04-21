@@ -1,8 +1,8 @@
 import { env } from "@dispatchly/env/server";
 import { Queue, Worker } from "bullmq";
 import Redis from "ioredis";
-import type { SendNotificationInput } from "../types/index.js";
 import { getProvider } from "../index.js";
+import type { SendNotificationInput } from "../types/index.js";
 
 const connection = new Redis(env.REDIS_URL, {
 	maxRetriesPerRequest: null,

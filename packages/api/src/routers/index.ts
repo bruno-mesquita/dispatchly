@@ -1,8 +1,8 @@
 import { protectedProcedure, publicProcedure, router } from "../index";
 import {
+	billingRouter,
 	notificationsRouter,
 	templatesRouter,
-	billingRouter,
 } from "./notifications";
 
 export const appRouter = router({
