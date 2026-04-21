@@ -67,7 +67,7 @@
 - [x] 9.2 notifications/batch - Enviar múltiplas
 - [x] 9.3 templates - Listar/criar/editar
 - [x] 9.4 logs - Ver histórico
-- [ ] 9.5 settings - Config org
+- [x] 9.5 settings - Config org
 - [x] 9.6 billing - Ver plano/Upgrade
 
 ### Fase 10: Frontend - Admin

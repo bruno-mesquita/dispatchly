@@ -9,9 +9,10 @@ import { BatchNotifications } from "./components/batch-notifications";
 import { BillingPanel } from "./components/billing-panel";
 import { NotificationLogs } from "./components/notification-logs";
 import { SendNotification } from "./components/send-notification";
+import { SettingsPanel } from "./components/settings-panel";
 import { TemplateManager } from "./components/template-manager";
 
-type Tab = "send" | "batch" | "templates" | "logs" | "billing";
+type Tab = "send" | "batch" | "templates" | "logs" | "billing" | "settings";
 
 export default function Dashboard({
 	session,
@@ -27,6 +28,7 @@ export default function Dashboard({
 		{ id: "templates", label: "Templates" },
 		{ id: "logs", label: "Logs" },
 		{ id: "billing", label: "Plano" },
+		{ id: "settings", label: "Configurações" },
 	];
 
 	return (
@@ -71,6 +73,7 @@ export default function Dashboard({
 				{activeTab === "templates" && <TemplateManager />}
 				{activeTab === "logs" && <NotificationLogs />}
 				{activeTab === "billing" && <BillingPanel />}
+				{activeTab === "settings" && <SettingsPanel />}
 			</div>
 		</div>
 	);

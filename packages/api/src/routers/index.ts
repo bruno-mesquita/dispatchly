@@ -4,6 +4,7 @@ import {
 	notificationsRouter,
 	templatesRouter,
 } from "./notifications";
+import { organizationRouter } from "./organization";
 
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
@@ -18,5 +19,6 @@ export const appRouter = router({
 	notifications: notificationsRouter,
 	templates: templatesRouter,
 	billing: billingRouter,
+	organization: organizationRouter,
 });
 export type AppRouter = typeof appRouter;
