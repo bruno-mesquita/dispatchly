@@ -20,6 +20,7 @@ export const env = createEnv({
 		EXPO_ACCESS_TOKEN: z.string().optional(),
 		STRIPE_SECRET_KEY: z.string().optional(),
 		STRIPE_WEBHOOK_SECRET: z.string().optional(),
+		ADMIN_EMAILS: z.string().optional(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,

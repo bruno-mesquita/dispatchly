@@ -71,10 +71,10 @@
 - [x] 9.6 billing - Ver plano/Upgrade
 
 ### Fase 10: Frontend - Admin
-- [ ] 10.1 /admin/organizations
-- [ ] 10.2 /admin/subscriptions
-- [ ] 10.3 /admin/logs
-- [ ] 10.4 /admin/analytics
+- [x] 10.1 /admin/organizations
+- [x] 10.2 /admin/subscriptions
+- [x] 10.3 /admin/logs
+- [x] 10.4 /admin/analytics
 
 ### Fase 11: Testes
 - [ ] 11.1 Testes de providers

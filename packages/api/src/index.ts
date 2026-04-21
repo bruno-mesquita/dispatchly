@@ -1,3 +1,4 @@
+import { env } from "@dispatchly/env/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 
 import type { Context } from "./context";
@@ -22,4 +23,24 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 			session: ctx.session,
 		},
 	});
+});
+
+export const adminProcedure = t.procedure.use(({ ctx, next }) => {
+	if (!ctx.session) {
+		throw new TRPCError({
+			code: "UNAUTHORIZED",
+			message: "Authentication required",
+		});
+	}
+	const adminEmails = (env.ADMIN_EMAILS ?? "")
+		.split(",")
+		.map((e) => e.trim())
+		.filter(Boolean);
+	if (!adminEmails.includes(ctx.session.user.email)) {
+		throw new TRPCError({
+			code: "FORBIDDEN",
+			message: "Admin access required",
+		});
+	}
+	return next({ ctx: { ...ctx, session: ctx.session } });
 });

@@ -1,4 +1,5 @@
 import { protectedProcedure, publicProcedure, router } from "../index";
+import { adminRouter } from "./admin";
 import {
 	billingRouter,
 	notificationsRouter,
@@ -20,5 +21,6 @@ export const appRouter = router({
 	templates: templatesRouter,
 	billing: billingRouter,
 	organization: organizationRouter,
+	admin: adminRouter,
 });
 export type AppRouter = typeof appRouter;
