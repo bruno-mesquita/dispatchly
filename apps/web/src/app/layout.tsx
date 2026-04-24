@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+	Geist,
+	Geist_Mono,
+	Instrument_Serif,
+	JetBrains_Mono,
+} from "next/font/google";
 
 import "../index.css";
-import Header from "@/components/header";
 import Providers from "@/components/providers";
 
 const geistSans = Geist({
@@ -15,9 +19,23 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
+const jetbrainsMono = JetBrains_Mono({
+	variable: "--font-jetbrains-mono",
+	subsets: ["latin"],
+	weight: ["400", "500"],
+});
+
+const instrumentSerif = Instrument_Serif({
+	variable: "--font-instrument-serif",
+	subsets: ["latin"],
+	weight: "400",
+	style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
-	title: "dispatchly",
-	description: "dispatchly",
+	title: "Dispatchly — Multichannel notification infrastructure",
+	description:
+		"Send email, SMS, and push from one API. Journeys, transactional, and broadcast — all observable.",
 };
 
 export default function RootLayout({
@@ -28,14 +46,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}
 			>
-				<Providers>
-					<div className="grid h-svh grid-rows-[auto_1fr]">
-						<Header />
-						{children}
-					</div>
-				</Providers>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);
