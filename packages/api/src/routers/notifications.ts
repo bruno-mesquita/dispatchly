@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { NotificationLog } from "@dispatchly/db";
 import { protectedProcedure, router } from "../index.js";
 import { sendNotification } from "../services/notifications.js";
 

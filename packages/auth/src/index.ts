@@ -2,7 +2,7 @@ import { client } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { apiKey } from "better-auth/plugins/api-key";
+import { apiKey } from "@better-auth/api-key";
 
 export function createAuth() {
 	return betterAuth({
