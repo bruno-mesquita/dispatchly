@@ -34,8 +34,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
 	title: "Dispatchly — Admin Panel",
-	description:
-		"Internal management for Dispatchly infrastructure.",
+	description: "Internal management for Dispatchly infrastructure.",
 };
 
 export default function RootLayout({

@@ -34,8 +34,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
 	title: "Dispatchly — Dashboard",
-	description:
-		"Manage your multichannel notifications.",
+	description: "Manage your multichannel notifications.",
 };
 
 export default function RootLayout({

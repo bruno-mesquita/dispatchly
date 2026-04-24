@@ -5,9 +5,7 @@ import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
 export default function Header() {
-	const links = [
-		{ to: "/admin", label: "Admin" },
-	] as const;
+	const links = [{ to: "/admin", label: "Admin" }] as const;
 
 	return (
 		<div>
