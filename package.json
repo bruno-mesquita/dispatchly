@@ -32,6 +32,8 @@
 		"build": "turbo build",
 		"check-types": "turbo check-types",
 		"dev:web": "turbo -F web dev",
+		"dev:admin": "turbo -F admin dev",
+		"dev:client": "turbo -F client dev",
 		"dev:server": "turbo -F server dev",
 		"db:start": "turbo -F @dispatchly/db db:start",
 		"db:watch": "turbo -F @dispatchly/db db:watch",

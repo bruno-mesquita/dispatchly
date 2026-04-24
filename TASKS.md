@@ -101,9 +101,11 @@ dispatchly/
 │       ├── notifications.ts
 │       ├── templates.ts
 │       └── billing.ts
-├── apps/server/src/index.ts
-└── apps/web/src/app/
-    └── dashboard/
+├── apps/
+│   ├── web/        # Landing Page (Port 3001)
+│   ├── admin/      # Painel Admin (Port 3002)
+│   ├── client/     # Dashboard Cliente (Port 3003)
+│   └── server/     # API Elysia (Port 3000)
 ```
 
 ---

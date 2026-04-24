@@ -9,10 +9,12 @@ import { Elysia, t } from "elysia";
 
 const authInstance = await auth;
 
+const origins = env.CORS_ORIGIN.split(",").map((o) => o.trim());
+
 new Elysia()
 	.use(
 		cors({
-			origin: env.CORS_ORIGIN,
+			origin: origins,
 			methods: ["GET", "POST", "OPTIONS"],
 			allowedHeaders: ["Content-Type", "Authorization"],
 			credentials: true,

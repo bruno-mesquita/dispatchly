@@ -819,13 +819,13 @@ function Nav() {
 				style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 13 }}
 			>
 				<a
-					href="/login"
+					href="http://localhost:3003/login"
 					style={{ color: "var(--fg-dim)", textDecoration: "none" }}
 				>
 					Sign in
 				</a>
-				<button
-					type="button"
+				<a
+					href="http://localhost:3003/login"
 					style={{
 						background: "var(--fg)",
 						color: "var(--bg)",
@@ -836,10 +836,11 @@ function Nav() {
 						fontWeight: 500,
 						cursor: "pointer",
 						fontFamily: "var(--font-sans)",
+						textDecoration: "none",
 					}}
 				>
 					Start free →
-				</button>
+				</a>
 			</div>
 		</nav>
 	);
@@ -929,8 +930,8 @@ function Hero() {
 					and broadcast — observable by default.
 				</p>
 				<div style={{ display: "flex", gap: 10, marginBottom: 56 }}>
-					<button
-						type="button"
+					<a
+						href="http://localhost:3003/login"
 						style={{
 							background: "var(--fg)",
 							color: "var(--bg)",
@@ -941,10 +942,11 @@ function Hero() {
 							fontWeight: 500,
 							cursor: "pointer",
 							fontFamily: "var(--font-sans)",
+							textDecoration: "none",
 						}}
 					>
 						Start free →
-					</button>
+					</a>
 					<button
 						type="button"
 						style={{
@@ -1614,8 +1616,8 @@ function CTA() {
 					</span>
 				</h2>
 				<div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
-					<button
-						type="button"
+					<a
+						href="http://localhost:3003/login"
 						style={{
 							background: "var(--fg)",
 							color: "var(--bg)",
@@ -1626,10 +1628,11 @@ function CTA() {
 							fontWeight: 500,
 							cursor: "pointer",
 							fontFamily: "var(--font-sans)",
+							textDecoration: "none",
 						}}
 					>
 						Start free →
-					</button>
+					</a>
 					<button
 						type="button"
 						style={{
