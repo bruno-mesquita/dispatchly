@@ -1,11 +1,9 @@
-import { protectedProcedure, publicProcedure, router } from "../index";
-import { adminRouter } from "./admin";
-import {
-	billingRouter,
-	notificationsRouter,
-	templatesRouter,
-} from "./notifications";
-import { organizationRouter } from "./organization";
+import { protectedProcedure, publicProcedure, router } from "../index.js";
+import { adminRouter } from "./admin.js";
+import { billingRouter } from "./billing.js";
+import { notificationsRouter } from "./notifications.js";
+import { organizationRouter } from "./organization.js";
+import { templatesRouter } from "./templates.js";
 
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
@@ -23,4 +21,5 @@ export const appRouter = router({
 	organization: organizationRouter,
 	admin: adminRouter,
 });
+
 export type AppRouter = typeof appRouter;

@@ -1,10 +1,8 @@
 # Tarefas de Implementação - Dispatchly SaaS
 
-> **Última atualização:** 2026-04-18
+> **Última atualização:** 2026-04-22
 
 ---
-
-## Fase Atual: 9 - Frontend Dashboard
 
 ## ✅ Fases Completas
 
@@ -12,6 +10,7 @@
 - [x] 1.1 Redis no docker-compose.yml
 - [x] 1.2 Env vars (RESEND_*, TWILIO_*, EXPO_*, STRIPE_*)
 - [x] 1.3 Scripts docker
+- [x] 1.4 Infraestrutura de testes (docker-compose.test.yml)
 
 ### Fase 2: Auth
 - [x] 2.1 Instalar @better-auth/stripe + stripe
@@ -58,10 +57,6 @@
 - [x] 8.2 templatesRouter
 - [x] 8.3 billingRouter
 
----
-
-## ❌ Fases Pendentes
-
 ### Fase 9: Frontend - Dashboard
 - [x] 9.1 notifications/send - Enviar 1 notificação
 - [x] 9.2 notifications/batch - Enviar múltiplas
@@ -77,10 +72,11 @@
 - [x] 10.4 /admin/analytics
 
 ### Fase 11: Testes
-- [ ] 11.1 Testes de providers
-- [ ] 11.2 Testes de queue
-- [ ] 11.3 Testes de APIs
-- [ ] 11.4 Testes de billing
+- [x] 11.1 Testes de providers
+- [x] 11.2 Testes de queue
+- [x] 11.3 Testes de APIs
+- [x] 11.4 Testes de billing
+- [x] 11.5 Testes E2E (Auth, Billing, Notifications)
 
 ---
 
@@ -103,7 +99,8 @@ dispatchly/
 │   ├── templates/src/service.ts
 │   └── api/src/routers/
 │       ├── notifications.ts
-│       └── templates.ts
+│       ├── templates.ts
+│       └── billing.ts
 ├── apps/server/src/index.ts
 └── apps/web/src/app/
     └── dashboard/
@@ -124,15 +121,10 @@ bun run dev
 # Verificar tipos
 bun run check-types
 bun run check
+
+# Testes
+bun test
 ```
-
----
-
-## ⚠️ Issues Known (ajustar ao continuar)
-
-1. **Twilio provider** - @ts-expect-error por tipo mismatch
-2. **Templates/Billing** - imports podem quebrados
-3. **Routers** - precisam ser registryados no appRouter
 
 ---
 

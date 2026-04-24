@@ -1,4 +1,4 @@
-import { Subscription } from "@dispatchly/db";
+import { Subscription as SubscriptionModel } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
 import Stripe from "stripe";
 
@@ -44,9 +44,13 @@ export async function createCheckoutSession(
 	const plan = PLANS.find((p) => p.id === planId);
 	if (!plan) throw new Error("Plan not found");
 
-	let subscription = await Subscription.findOne({ orgId });
+	let subscription = await SubscriptionModel.findOne({ orgId });
 	if (!subscription) {
-		subscription = new Subscription({ orgId, plan: "free", status: "active" });
+		subscription = new SubscriptionModel({
+			orgId,
+			plan: "free",
+			status: "active",
+		});
 		await subscription.save();
 	}
 
@@ -75,7 +79,7 @@ export async function createCheckoutSession(
 export async function createPortalSession(orgId: string, returnUrl: string) {
 	if (!stripe) throw new Error("Stripe not configured");
 
-	const subscription = await Subscription.findOne({ orgId });
+	const subscription = await SubscriptionModel.findOne({ orgId });
 	if (!subscription?.stripeCustomerId) {
 		throw new Error("No subscription found");
 	}
@@ -102,22 +106,20 @@ export async function handleWebhook(body: string, signature: string) {
 	switch (event.type) {
 		case "customer.subscription.created":
 		case "customer.subscription.updated": {
-			const subscription = event.data.object as Stripe.Subscription;
-			const orgId = subscription.metadata?.orgId;
+			const stripeSub = event.data.object as any;
+			const orgId = stripeSub.metadata?.orgId;
 
 			if (orgId) {
-				await Subscription.findOneAndUpdate(
+				await SubscriptionModel.findOneAndUpdate(
 					{ orgId },
 					{
-						stripeSubscriptionId: subscription.id,
-						status: subscription.status,
+						stripeSubscriptionId: stripeSub.id,
+						status: stripeSub.status,
 						plan:
-							PLANS.find((p) => p.id === subscription.metadata?.planId)?.id ||
+							PLANS.find((p) => p.id === stripeSub.metadata?.planId)?.id ||
 							"free",
-						currentPeriodStart: new Date(
-							subscription.current_period_start * 1000,
-						),
-						currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+						currentPeriodStart: new Date(stripeSub.current_period_start * 1000),
+						currentPeriodEnd: new Date(stripeSub.current_period_end * 1000),
 					},
 					{ upsert: true },
 				);
@@ -125,9 +127,9 @@ export async function handleWebhook(body: string, signature: string) {
 			break;
 		}
 		case "customer.subscription.deleted": {
-			const subscription = event.data.object as Stripe.Subscription;
-			await Subscription.findOneAndUpdate(
-				{ stripeSubscriptionId: subscription.id },
+			const stripeSub = event.data.object as any;
+			await SubscriptionModel.findOneAndUpdate(
+				{ stripeSubscriptionId: stripeSub.id },
 				{ status: "canceled" },
 			);
 			break;
@@ -138,14 +140,14 @@ export async function handleWebhook(body: string, signature: string) {
 }
 
 export async function getSubscription(orgId: string) {
-	return Subscription.findOne({ orgId });
+	return SubscriptionModel.findOne({ orgId });
 }
 
 export async function checkQuota(
 	orgId: string,
 	type: "emails" | "sms" | "push",
 ): Promise<{ allowed: boolean; remaining: number }> {
-	const subscription = await Subscription.findOne({ orgId });
+	const subscription = await SubscriptionModel.findOne({ orgId });
 	const plan = PLANS.find((p) => p.id === subscription?.plan || "free");
 	const limit = plan?.limits[type] ?? 0;
 

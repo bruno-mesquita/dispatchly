@@ -1,6 +1,25 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
+	"globalPassThroughEnv": [
+		"DATABASE_URL",
+		"BETTER_AUTH_SECRET",
+		"BETTER_AUTH_URL",
+		"CORS_ORIGIN",
+		"NODE_ENV",
+		"REDIS_URL",
+		"RESEND_API_KEY",
+		"RESEND_FROM_EMAIL",
+		"TWILIO_ACCOUNT_SID",
+		"TWILIO_AUTH_TOKEN",
+		"TWILIO_PHONE_NUMBER",
+		"EXPO_ACCESS_TOKEN",
+		"STRIPE_SECRET_KEY",
+		"STRIPE_WEBHOOK_SECRET",
+		"ADMIN_EMAILS",
+		"NEXT_PUBLIC_BETTER_AUTH_URL",
+		"NEXT_PUBLIC_SERVER_URL"
+	],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],

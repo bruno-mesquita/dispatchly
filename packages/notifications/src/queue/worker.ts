@@ -8,10 +8,10 @@ const connection = new Redis(env.REDIS_URL, {
 	maxRetriesPerRequest: null,
 });
 
-export const emailQueue = new Queue("notifications:email", { connection });
-export const smsQueue = new Queue("notifications:sms", { connection });
-export const pushQueue = new Queue("notifications:push", { connection });
-export const retryQueue = new Queue("notifications:retry", { connection });
+export const emailQueue = new Queue("notifications-email", { connection });
+export const smsQueue = new Queue("notifications-sms", { connection });
+export const pushQueue = new Queue("notifications-push", { connection });
+export const retryQueue = new Queue("notifications-retry", { connection });
 
 export interface JobData extends SendNotificationInput {
 	organizationId: string;
@@ -44,7 +44,7 @@ export async function addRetryJob(data: JobData): Promise<void> {
 }
 
 const worker = new Worker(
-	"notifications:email",
+	"notifications-email",
 	async (job) => {
 		if (!job.data) return;
 		const data = job.data as JobData;
@@ -72,7 +72,7 @@ worker.on("completed", (job) => {
 });
 
 worker.on("failed", (job, err) => {
-	console.error(`Notification ${job.id} failed:`, err.message);
+	console.error(`Notification ${job?.id} failed:`, err.message);
 });
 
 export { worker };

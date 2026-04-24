@@ -1,0 +1,24 @@
+name: dispatchly-test
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: dispatchly-mongodb-test
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: dispatchly_test
+    ports:
+      - "27018:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: dispatchly-redis-test
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly no

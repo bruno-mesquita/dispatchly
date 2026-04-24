@@ -1,13 +1,7 @@
-import { checkQuota, PLANS } from "@dispatchly/billing";
+import { checkQuota } from "@dispatchly/billing";
 import { NotificationLog } from "@dispatchly/db";
 import { addToQueue, type JobData } from "@dispatchly/notifications";
-import {
-	applyTemplate,
-	createTemplate,
-	deleteTemplate,
-	getTemplatesByOrg,
-	updateTemplate,
-} from "@dispatchly/templates";
+import { applyTemplate } from "@dispatchly/templates";
 import { z } from "zod";
 import { protectedProcedure, router } from "../index.js";
 
@@ -20,7 +14,7 @@ export const notificationsRouter = router({
 				subject: z.string().optional(),
 				content: z.string(),
 				templateId: z.string().optional(),
-				variables: z.record(z.unknown()).optional(),
+				variables: z.record(z.string(), z.unknown()).optional(),
 			}),
 		)
 		.mutation(async ({ input, ctx }) => {
@@ -47,7 +41,7 @@ export const notificationsRouter = router({
 					input.variables || {},
 				);
 				content = rendered.content;
-				subject = rendered.subject;
+				subject = rendered.subject || "";
 			}
 
 			const log = new NotificationLog({
@@ -117,82 +111,4 @@ export const notificationsRouter = router({
 		]);
 		return stats;
 	}),
-});
-
-export const templatesRouter = router({
-	list: protectedProcedure
-		.input(
-			z.object({
-				type: z.enum(["email", "sms", "push"]).optional(),
-			}),
-		)
-		.query(async ({ input, ctx }) => {
-			return getTemplatesByOrg(ctx.session.user.id, input.type);
-		}),
-	create: protectedProcedure
-		.input(
-			z.object({
-				name: z.string().min(1),
-				type: z.enum(["email", "sms", "push"]),
-				subject: z.string().optional(),
-				content: z.string().min(1),
-				variables: z.array(z.string()).optional(),
-			}),
-		)
-		.mutation(async ({ input, ctx }) => {
-			return createTemplate({
-				...input,
-				orgId: ctx.session.user.id,
-			});
-		}),
-	update: protectedProcedure
-		.input(
-			z.object({
-				id: z.string(),
-				name: z.string().optional(),
-				subject: z.string().optional(),
-				content: z.string().optional(),
-				isActive: z.boolean().optional(),
-			}),
-		)
-		.mutation(async ({ input }) => {
-			const { id, ...data } = input;
-			return updateTemplate(id, data);
-		}),
-	delete: protectedProcedure
-		.input(z.object({ id: z.string() }))
-		.mutation(async ({ input }) => {
-			return deleteTemplate(input.id);
-		}),
-});
-
-export const billingRouter = router({
-	getPlan: protectedProcedure.query(async ({ ctx }) => {
-		const orgId = ctx.session.user.id;
-		const plan = PLANS.find((p) => p.id === orgId);
-		return plan || PLANS[0];
-	}),
-	createCheckoutSession: protectedProcedure
-		.input(
-			z.object({
-				planId: z.string(),
-				successUrl: z.string().url(),
-				cancelUrl: z.string().url(),
-			}),
-		)
-		.mutation(async ({ input, ctx }) => {
-			const { createCheckoutSession } = await import("@dispatchly/billing");
-			return createCheckoutSession(
-				ctx.session.user.id,
-				input.planId,
-				input.successUrl,
-				input.cancelUrl,
-			);
-		}),
-	getPortalSession: protectedProcedure
-		.input(z.object({ returnUrl: z.string().url() }))
-		.mutation(async ({ input, ctx }) => {
-			const { createPortalSession } = await import("@dispatchly/billing");
-			return createPortalSession(ctx.session.user.id, input.returnUrl);
-		}),
 });

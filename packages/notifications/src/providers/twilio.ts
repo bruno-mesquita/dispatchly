@@ -1,5 +1,5 @@
 import { env } from "@dispatchly/env/server";
-import Twilio from "twilio";
+import twilio from "twilio";
 import type {
 	NotificationProvider,
 	ProviderResponse,
@@ -8,11 +8,10 @@ import type {
 
 export class TwilioProvider implements NotificationProvider {
 	readonly name = "twilio";
-	private client: Twilio;
+	private client: ReturnType<typeof twilio>;
 
 	constructor() {
-		// @ts-expect-error - Twilio SDK type mismatch
-		this.client = new Twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
+		this.client = twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
 	}
 
 	async send(input: SendNotificationInput): Promise<ProviderResponse> {
