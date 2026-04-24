@@ -1,0 +1,22 @@
+{
+	"name": "@dispatchly/node",
+	"version": "0.0.1",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown src/index.ts --dts",
+		"dev": "tsdown src/index.ts --watch"
+	},
+	"devDependencies": {
+		"tsdown": "^0.21.0",
+		"typescript": "^5"
+	}
+}
