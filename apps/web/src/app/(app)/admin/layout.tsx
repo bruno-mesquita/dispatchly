@@ -33,7 +33,7 @@ export default async function AdminLayout({
 				{NAV.map((n) => (
 					<Link
 						key={n.href}
-						href={n.href}
+						href={n.href as any}
 						className="rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
 					>
 						{n.label}
