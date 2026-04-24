@@ -1,101 +1,55 @@
-# dispatchly
+# Dispatchly
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Elysia, TRPC, and more.
+Multi-channel Notification-as-a-Service (SaaS) platform built with the **Better T Stack**. Send emails, SMS, and push notifications with full tracking and automatic retries.
 
 ## Features
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **Shared UI package** - shadcn/ui primitives live in `packages/ui`
-- **Elysia** - Type-safe, high-performance framework
-- **tRPC** - End-to-end type-safe APIs
-- **Bun** - Runtime environment
-- **Mongoose** - TypeScript-first ORM
-- **MongoDB** - Database engine
-- **Authentication** - Better-Auth
-- **Biome** - Linting and formatting
-- **Husky** - Git hooks for code quality
-- **Tauri** - Build native desktop applications
-- **Turborepo** - Optimized monorepo build system
-
-## Getting Started
-
-First, install the dependencies:
-
-```bash
-bun install
-```
-
-## Database Setup
-
-This project uses MongoDB with Mongoose.
-
-1. Make sure you have MongoDB set up.
-2. Update your `apps/server/.env` file with your MongoDB connection URI.
-
-Then, run the development server:
-
-```bash
-bun run dev
-```
-
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-The API is running at [http://localhost:3000](http://localhost:3000).
-
-## UI Customization
-
-React web apps in this stack share shadcn/ui primitives through `packages/ui`.
-
-- Change design tokens and global styles in `packages/ui/src/styles/globals.css`
-- Update shared primitives in `packages/ui/src/components/*`
-- Adjust shadcn aliases or style config in `packages/ui/components.json` and `apps/web/components.json`
-
-### Add more shared components
-
-Run this from the project root to add more primitives to the shared UI package:
-
-```bash
-npx shadcn@latest add accordion dialog popover sheet table -c packages/ui
-```
-
-Import shared components like this:
-
-```tsx
-import { Button } from "@dispatchly/ui/components/button";
-```
-
-### Add app-specific blocks
-
-If you want to add app-specific blocks instead of shared primitives, run the shadcn CLI from `apps/web`.
-
-## Git Hooks and Formatting
-
-- Initialize hooks: `bun run prepare`
-- Format and lint fix: `bun run check`
+- **Multi-Channel** - Email (Resend), SMS (Twilio), and Push (Expo)
+- **Queue System** - Reliable delivery with BullMQ and Redis
+- **Template Engine** - Manage reusable notification templates with variable interpolation
+- **Billing** - Plan-based quota management with Stripe integration
+- **Dashboard** - Modern dashboard built with Next.js 16 and shadcn/ui
+- **Desktop App** - Native experience powered by Tauri
+- **Type Safety** - End-to-end type safety with tRPC and Bun
 
 ## Project Structure
 
 ```
 dispatchly/
 ├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   └── server/      # Backend API (Elysia, TRPC)
+│   ├── web/         # Dashboard & Landing Pages (Next.js)
+│   ├── server/      # Backend API & Auth (Elysia, tRPC)
+│   └── client/      # Desktop Application (Tauri)
 ├── packages/
-│   ├── ui/          # Shared shadcn/ui components and styles
-│   ├── api/         # API layer / business logic
-│   ├── auth/        # Authentication configuration & logic
-│   └── db/          # Database schema & queries
+│   ├── ui/          # Shared Design System (shadcn/ui)
+│   ├── api/         # Business Logic & tRPC Routers
+│   ├── notifications/ # Delivery Providers & Queues
+│   └── db/          # Database Models (MongoDB/Mongoose)
 ```
 
-## Available Scripts
+## Getting Started
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run dev:server`: Start only the server
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run check`: Run Biome formatting and linting
-- `cd apps/web && bun run desktop:dev`: Start Tauri desktop app in development
-- `cd apps/web && bun run desktop:build`: Build Tauri desktop app
-- Note: Desktop builds package static web assets. Next.js needs a static/export build configuration before desktop packaging will work.
+1. **Install Dependencies**
+   ```bash
+   bun install
+   ```
+
+2. **Setup Infrastructure**
+   Start MongoDB and Redis via Docker:
+   ```bash
+   bun run db:start
+   bun run redis:start
+   ```
+
+3. **Run Development Server**
+   ```bash
+   bun run dev
+   ```
+   - Web App: [http://localhost:3001](http://localhost:3001)
+   - API Server: [http://localhost:3000](http://localhost:3000)
+
+## Documentation for Developers & Agents
+
+For detailed technical architecture, coding conventions, request flows, and environment variable configuration, please refer to:
+
+👉 **[AGENTS.md](AGENTS.md)**
