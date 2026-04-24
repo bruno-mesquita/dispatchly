@@ -155,7 +155,7 @@ export function CodeBlock({
 				fontSize: 12.5,
 				lineHeight: 1.7,
 				borderRadius: 6,
-				border: "1px solid var(--hairline)",
+				border: "1px solid var(--border)",
 				overflow: "hidden",
 			}}
 		>
@@ -164,7 +164,7 @@ export function CodeBlock({
 					style={{
 						display: "flex",
 						alignItems: "center",
-						borderBottom: "1px solid var(--hairline)",
+						borderBottom: "1px solid var(--border)",
 						background: "var(--code-bar)",
 					}}
 				>
@@ -181,7 +181,7 @@ export function CodeBlock({
 								fontFamily: "var(--font-mono)",
 								fontSize: 11.5,
 								color: t === activeTab ? "var(--code-fg)" : "var(--code-dim)",
-								borderRight: "1px solid var(--hairline)",
+								borderRight: "1px solid var(--border)",
 								borderBottom:
 									t === activeTab
 										? "1px solid var(--accent)"

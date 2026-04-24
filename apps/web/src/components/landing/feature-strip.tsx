@@ -26,8 +26,8 @@ export function FeatureStrip() {
 		<section
 			style={{
 				padding: "60px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg-alt)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--secondary)",
 			}}
 		>
 			<div
@@ -37,10 +37,10 @@ export function FeatureStrip() {
 					display: "grid",
 					gridTemplateColumns: "repeat(4, 1fr)",
 					gap: 0,
-					border: "1px solid var(--hairline)",
+					border: "1px solid var(--border)",
 					borderRadius: 6,
 					overflow: "hidden",
-					background: "var(--bg)",
+					background: "var(--background)",
 				}}
 			>
 				{FEATURES.map((f, i) => (
@@ -48,17 +48,23 @@ export function FeatureStrip() {
 						key={f.title}
 						style={{
 							padding: "28px 24px",
-							borderRight: i < 3 ? "1px solid var(--hairline)" : "none",
+							borderRight: i < 3 ? "1px solid var(--border)" : "none",
 						}}
 					>
-						<div style={{ fontSize: 14, fontWeight: 600, color: "var(--fg)" }}>
+						<div
+							style={{
+								fontSize: 14,
+								fontWeight: 600,
+								color: "var(--foreground)",
+							}}
+						>
 							{f.title}
 						</div>
 						<div
 							style={{
 								fontSize: 11,
 								fontFamily: "var(--font-mono)",
-								color: "var(--fg-dim)",
+								color: "var(--muted-foreground)",
 								marginTop: 4,
 							}}
 						>
@@ -67,7 +73,7 @@ export function FeatureStrip() {
 						<div
 							style={{
 								fontSize: 13,
-								color: "var(--fg-dim)",
+								color: "var(--muted-foreground)",
 								marginTop: 10,
 								lineHeight: 1.5,
 							}}

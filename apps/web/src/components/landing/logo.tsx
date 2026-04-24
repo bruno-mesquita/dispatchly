@@ -8,7 +8,14 @@ export function DLogo({ size = 22 }: { size?: number }) {
 			aria-hidden="true"
 			style={{ flexShrink: 0 }}
 		>
-			<rect x="2" y="2" width="20" height="20" rx="4" fill="var(--fg)" />
+			<rect
+				x="2"
+				y="2"
+				width="20"
+				height="20"
+				rx="4"
+				fill="var(--foreground)"
+			/>
 			<path
 				d="M7 8.5 L11 12 L7 15.5"
 				stroke="#FAFAF7"
@@ -37,7 +44,7 @@ export function DWordmark({ size = 22 }: { size?: number }) {
 				display: "inline-flex",
 				alignItems: "center",
 				gap: 8,
-				color: "var(--fg)",
+				color: "var(--foreground)",
 				letterSpacing: -0.3,
 			}}
 		>

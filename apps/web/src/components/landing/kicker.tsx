@@ -7,7 +7,7 @@ export function Kicker({ num, label }: { num: string; label: string }) {
 				gap: 10,
 				fontFamily: "var(--font-mono)",
 				fontSize: 11,
-				color: "var(--fg-dim)",
+				color: "var(--muted-foreground)",
 				textTransform: "uppercase",
 				letterSpacing: 0.8,
 				marginBottom: 14,
@@ -18,7 +18,7 @@ export function Kicker({ num, label }: { num: string; label: string }) {
 				style={{
 					width: 18,
 					height: 1,
-					background: "var(--fg-dim)",
+					background: "var(--muted-foreground)",
 					opacity: 0.5,
 				}}
 			/>

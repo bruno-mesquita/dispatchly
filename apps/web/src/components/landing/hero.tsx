@@ -11,8 +11,8 @@ export function Hero() {
 		<section
 			style={{
 				padding: "80px 40px 60px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--background)",
 				position: "relative",
 				overflow: "hidden",
 			}}
@@ -23,7 +23,7 @@ export function Hero() {
 					inset: 0,
 					pointerEvents: "none",
 					backgroundImage:
-						"linear-gradient(var(--hairline) 1px, transparent 1px), linear-gradient(90deg, var(--hairline) 1px, transparent 1px)",
+						"linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
 					backgroundSize: "40px 40px",
 					WebkitMaskImage:
 						"radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)",
@@ -39,7 +39,7 @@ export function Hero() {
 						gap: 8,
 						fontFamily: "var(--font-mono)",
 						fontSize: 11,
-						color: "var(--fg-dim)",
+						color: "var(--muted-foreground)",
 						textTransform: "uppercase",
 						letterSpacing: 0.8,
 						marginBottom: 28,
@@ -57,7 +57,7 @@ export function Hero() {
 						lineHeight: 0.98,
 						margin: "0 0 28px",
 						maxWidth: 700,
-						color: "var(--fg)",
+						color: "var(--foreground)",
 					}}
 				>
 					Send every message.
@@ -75,7 +75,7 @@ export function Hero() {
 				<p
 					style={{
 						fontSize: 18,
-						color: "var(--fg-dim)",
+						color: "var(--muted-foreground)",
 						maxWidth: 480,
 						lineHeight: 1.55,
 						margin: "0 0 36px",
@@ -88,8 +88,8 @@ export function Hero() {
 					<a
 						href="http://localhost:3003/login"
 						style={{
-							background: "var(--fg)",
-							color: "var(--bg)",
+							background: "var(--foreground)",
+							color: "var(--background)",
 							border: "none",
 							borderRadius: 6,
 							padding: "13px 22px",
@@ -106,8 +106,8 @@ export function Hero() {
 						type="button"
 						style={{
 							background: "transparent",
-							color: "var(--fg)",
-							border: "1px solid var(--hairline)",
+							color: "var(--foreground)",
+							border: "1px solid var(--border)",
 							borderRadius: 6,
 							padding: "13px 22px",
 							fontSize: 14,
@@ -133,7 +133,7 @@ export function Hero() {
 					<div
 						style={{
 							background: "var(--code-bg)",
-							border: "1px solid var(--hairline)",
+							border: "1px solid var(--border)",
 							borderRadius: 6,
 							overflow: "hidden",
 						}}
@@ -143,7 +143,7 @@ export function Hero() {
 								display: "flex",
 								alignItems: "center",
 								padding: "8px 14px",
-								borderBottom: "1px solid var(--hairline)",
+								borderBottom: "1px solid var(--border)",
 								background: "var(--code-bar)",
 								fontSize: 11,
 								color: "var(--code-dim)",

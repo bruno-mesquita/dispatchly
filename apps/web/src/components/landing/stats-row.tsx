@@ -3,8 +3,8 @@ export function StatsRow() {
 		<section
 			style={{
 				padding: "70px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg-alt)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--secondary)",
 			}}
 		>
 			<div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -12,8 +12,8 @@ export function StatsRow() {
 					style={{
 						display: "grid",
 						gridTemplateColumns: "repeat(3, 1fr)",
-						borderTop: "1px solid var(--hairline)",
-						borderBottom: "1px solid var(--hairline)",
+						borderTop: "1px solid var(--border)",
+						borderBottom: "1px solid var(--border)",
 					}}
 				>
 					{(
@@ -27,7 +27,7 @@ export function StatsRow() {
 							key={l as string}
 							style={{
 								padding: "32px 20px",
-								borderRight: i < 2 ? "1px solid var(--hairline)" : "none",
+								borderRight: i < 2 ? "1px solid var(--border)" : "none",
 							}}
 						>
 							<div
@@ -36,7 +36,7 @@ export function StatsRow() {
 									fontWeight: 500,
 									letterSpacing: -1.8,
 									lineHeight: 1,
-									color: "var(--fg)",
+									color: "var(--foreground)",
 								}}
 							>
 								{n as string}
@@ -45,7 +45,7 @@ export function StatsRow() {
 								style={{
 									fontSize: 13,
 									fontWeight: 500,
-									color: "var(--fg)",
+									color: "var(--foreground)",
 									marginTop: 8,
 								}}
 							>
@@ -55,7 +55,7 @@ export function StatsRow() {
 								style={{
 									fontSize: 11,
 									fontFamily: "var(--font-mono)",
-									color: "var(--fg-dim)",
+									color: "var(--muted-foreground)",
 									marginTop: 4,
 								}}
 							>

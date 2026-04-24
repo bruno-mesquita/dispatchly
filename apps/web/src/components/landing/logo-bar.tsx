@@ -3,8 +3,8 @@ export function LogoBar() {
 		<section
 			style={{
 				padding: "28px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg-alt)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--secondary)",
 			}}
 		>
 			<div
@@ -16,7 +16,7 @@ export function LogoBar() {
 					gap: 40,
 					fontFamily: "var(--font-mono)",
 					fontSize: 11,
-					color: "var(--fg-dim)",
+					color: "var(--muted-foreground)",
 				}}
 			>
 				<span
@@ -37,7 +37,7 @@ export function LogoBar() {
 						flexWrap: "wrap",
 						fontSize: 15,
 						fontWeight: 500,
-						color: "var(--fg)",
+						color: "var(--foreground)",
 						letterSpacing: -0.3,
 					}}
 				>

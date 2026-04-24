@@ -3,8 +3,8 @@ export function CTA() {
 		<section
 			style={{
 				padding: "100px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--background)",
 			}}
 		>
 			<div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
@@ -15,7 +15,7 @@ export function CTA() {
 						letterSpacing: -1.6,
 						lineHeight: 1.02,
 						margin: "0 0 36px",
-						color: "var(--fg)",
+						color: "var(--foreground)",
 					}}
 				>
 					Ship the journey.{" "}
@@ -29,8 +29,8 @@ export function CTA() {
 					<a
 						href="http://localhost:3003/login"
 						style={{
-							background: "var(--fg)",
-							color: "var(--bg)",
+							background: "var(--foreground)",
+							color: "var(--background)",
 							border: "none",
 							borderRadius: 6,
 							padding: "13px 22px",
@@ -47,8 +47,8 @@ export function CTA() {
 						type="button"
 						style={{
 							background: "transparent",
-							color: "var(--fg)",
-							border: "1px solid var(--hairline)",
+							color: "var(--foreground)",
+							border: "1px solid var(--border)",
 							borderRadius: 6,
 							padding: "13px 22px",
 							fontSize: 14,

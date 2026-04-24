@@ -104,9 +104,8 @@ function JourneyNode({
 	return (
 		<div
 			style={{
-				background: highlight ? "var(--accent-tint)" : "var(--surface)",
-				border:
-					"1px solid " + (highlight ? "var(--accent)" : "var(--hairline)"),
+				background: highlight ? "var(--accent-tint)" : "var(--card)",
+				border: "1px solid " + (highlight ? "var(--accent)" : "var(--border)"),
 				borderRadius: 6,
 				padding: "10px 12px",
 				minWidth: 150,
@@ -120,7 +119,7 @@ function JourneyNode({
 					display: "flex",
 					alignItems: "center",
 					gap: 8,
-					color: highlight ? "var(--accent)" : "var(--fg-dim)",
+					color: highlight ? "var(--accent)" : "var(--muted-foreground)",
 				}}
 			>
 				{icons[type]}
@@ -130,7 +129,7 @@ function JourneyNode({
 						fontWeight: 600,
 						textTransform: "uppercase",
 						letterSpacing: 0.6,
-						color: "var(--fg-dim)",
+						color: "var(--muted-foreground)",
 					}}
 				>
 					{type}
@@ -145,7 +144,7 @@ function JourneyNode({
 				style={{
 					fontSize: 13,
 					fontWeight: 500,
-					color: "var(--fg)",
+					color: "var(--foreground)",
 					marginTop: 2,
 				}}
 			>
@@ -155,7 +154,7 @@ function JourneyNode({
 				<div
 					style={{
 						fontSize: 10.5,
-						color: "var(--fg-dim)",
+						color: "var(--muted-foreground)",
 						fontFamily: "var(--font-mono)",
 					}}
 				>
@@ -178,7 +177,7 @@ function ArrowDown() {
 		>
 			<path
 				d="M5 0v16M1 13l4 4 4-4"
-				stroke="var(--fg-dim)"
+				stroke="var(--muted-foreground)"
 				strokeWidth="1.2"
 				strokeLinecap="round"
 			/>
@@ -195,9 +194,9 @@ export function JourneyDiagram() {
 				alignItems: "center",
 				gap: 6,
 				padding: "24px 20px",
-				background: "var(--bg-alt)",
+				background: "var(--secondary)",
 				borderRadius: 8,
-				border: "1px solid var(--hairline)",
+				border: "1px solid var(--border)",
 			}}
 		>
 			<JourneyNode
@@ -236,7 +235,7 @@ export function JourneyDiagram() {
 						style={{
 							fontSize: 9.5,
 							fontFamily: "var(--font-mono)",
-							color: "var(--fg-dim)",
+							color: "var(--muted-foreground)",
 							textTransform: "uppercase",
 							letterSpacing: 0.5,
 						}}
@@ -257,7 +256,7 @@ export function JourneyDiagram() {
 						style={{
 							fontSize: 9.5,
 							fontFamily: "var(--font-mono)",
-							color: "var(--fg-dim)",
+							color: "var(--muted-foreground)",
 							textTransform: "uppercase",
 							letterSpacing: 0.5,
 						}}

@@ -1,5 +1,4 @@
 export { CODE_SAMPLES, CodeBlock } from "./code-block";
-export { CSS_VARS } from "./css-vars";
 export { CTA } from "./cta";
 export { FeatureStrip } from "./feature-strip";
 export { Footer } from "./footer";

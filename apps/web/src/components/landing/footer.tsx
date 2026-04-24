@@ -28,9 +28,9 @@ export function Footer() {
 	return (
 		<footer
 			style={{
-				borderTop: "1px solid var(--hairline)",
+				borderTop: "1px solid var(--border)",
 				padding: "60px 40px 28px",
-				background: "var(--bg)",
+				background: "var(--background)",
 			}}
 		>
 			<div
@@ -47,7 +47,7 @@ export function Footer() {
 					<div
 						style={{
 							fontSize: 12,
-							color: "var(--fg-dim)",
+							color: "var(--muted-foreground)",
 							marginTop: 14,
 							maxWidth: 240,
 							lineHeight: 1.6,
@@ -63,7 +63,7 @@ export function Footer() {
 							marginTop: 18,
 							fontFamily: "var(--font-mono)",
 							fontSize: 10.5,
-							color: "var(--fg-dim)",
+							color: "var(--muted-foreground)",
 						}}
 					>
 						{["SOC 2", "GDPR", "HIPAA"].map((b) => (
@@ -71,7 +71,7 @@ export function Footer() {
 								key={b}
 								style={{
 									padding: "3px 7px",
-									border: "1px solid var(--hairline)",
+									border: "1px solid var(--border)",
 									borderRadius: 4,
 								}}
 							>
@@ -85,7 +85,7 @@ export function Footer() {
 						<div
 							style={{
 								fontSize: 11,
-								color: "var(--fg-dim)",
+								color: "var(--muted-foreground)",
 								textTransform: "uppercase",
 								letterSpacing: 0.8,
 								fontFamily: "var(--font-mono)",
@@ -106,7 +106,7 @@ export function Footer() {
 								<a
 									key={it}
 									href="/"
-									style={{ color: "var(--fg)", textDecoration: "none" }}
+									style={{ color: "var(--foreground)", textDecoration: "none" }}
 								>
 									{it}
 								</a>
@@ -120,12 +120,12 @@ export function Footer() {
 					maxWidth: 1200,
 					margin: "56px auto 0",
 					paddingTop: 20,
-					borderTop: "1px solid var(--hairline)",
+					borderTop: "1px solid var(--border)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
 					fontSize: 11.5,
-					color: "var(--fg-dim)",
+					color: "var(--muted-foreground)",
 					fontFamily: "var(--font-mono)",
 				}}
 			>

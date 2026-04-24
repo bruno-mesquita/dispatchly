@@ -8,8 +8,8 @@ export function Nav() {
 				alignItems: "center",
 				justifyContent: "space-between",
 				padding: "18px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--background)",
 				position: "sticky",
 				top: 0,
 				zIndex: 10,
@@ -22,7 +22,7 @@ export function Nav() {
 					alignItems: "center",
 					gap: 26,
 					fontSize: 13,
-					color: "var(--fg-dim)",
+					color: "var(--muted-foreground)",
 				}}
 			>
 				{["Product", "Docs", "Pricing", "Changelog", "Customers"].map((l) => (
@@ -40,15 +40,15 @@ export function Nav() {
 			>
 				<a
 					href="http://localhost:3003/login"
-					style={{ color: "var(--fg-dim)", textDecoration: "none" }}
+					style={{ color: "var(--muted-foreground)", textDecoration: "none" }}
 				>
 					Sign in
 				</a>
 				<a
 					href="http://localhost:3003/login"
 					style={{
-						background: "var(--fg)",
-						color: "var(--bg)",
+						background: "var(--foreground)",
+						color: "var(--background)",
 						border: "none",
 						borderRadius: 5,
 						padding: "7px 14px",

@@ -6,7 +6,7 @@ export function JourneysFeature() {
 		<section
 			style={{
 				padding: "70px 40px",
-				borderBottom: "1px solid var(--hairline)",
+				borderBottom: "1px solid var(--border)",
 			}}
 		>
 			<div
@@ -28,7 +28,7 @@ export function JourneysFeature() {
 							letterSpacing: -0.8,
 							margin: "0 0 16px",
 							lineHeight: 1.1,
-							color: "var(--fg)",
+							color: "var(--foreground)",
 						}}
 					>
 						Orchestrate across channels without a CDP.
@@ -36,7 +36,7 @@ export function JourneysFeature() {
 					<p
 						style={{
 							fontSize: 15,
-							color: "var(--fg-dim)",
+							color: "var(--muted-foreground)",
 							lineHeight: 1.6,
 							margin: "0 0 24px",
 						}}
@@ -70,7 +70,7 @@ export function JourneysFeature() {
 									display: "flex",
 									gap: 12,
 									padding: "10px 0",
-									borderBottom: "1px solid var(--hairline)",
+									borderBottom: "1px solid var(--border)",
 								}}
 							>
 								<div
@@ -88,7 +88,7 @@ export function JourneysFeature() {
 										style={{
 											fontSize: 13,
 											fontWeight: 500,
-											color: "var(--fg)",
+											color: "var(--foreground)",
 										}}
 									>
 										{t as string}
@@ -96,7 +96,7 @@ export function JourneysFeature() {
 									<div
 										style={{
 											fontSize: 12,
-											color: "var(--fg-dim)",
+											color: "var(--muted-foreground)",
 											marginTop: 2,
 										}}
 									>

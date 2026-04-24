@@ -5,7 +5,7 @@ export function Testimonial() {
 		<section
 			style={{
 				padding: "70px 40px",
-				borderBottom: "1px solid var(--hairline)",
+				borderBottom: "1px solid var(--border)",
 			}}
 		>
 			<div style={{ maxWidth: 900, margin: "0 auto" }}>
@@ -17,7 +17,7 @@ export function Testimonial() {
 						fontWeight: 500,
 						letterSpacing: -0.5,
 						lineHeight: 1.3,
-						color: "var(--fg)",
+						color: "var(--foreground)",
 					}}
 				>
 					We replaced three vendors and a queue with Dispatchly in a weekend.
@@ -44,19 +44,25 @@ export function Testimonial() {
 							justifyContent: "center",
 							fontSize: 13,
 							fontWeight: 600,
-							border: "1px solid var(--hairline)",
+							border: "1px solid var(--border)",
 						}}
 					>
 						MR
 					</div>
 					<div>
-						<div style={{ fontSize: 14, fontWeight: 500, color: "var(--fg)" }}>
+						<div
+							style={{
+								fontSize: 14,
+								fontWeight: 500,
+								color: "var(--foreground)",
+							}}
+						>
 							Maya Rao
 						</div>
 						<div
 							style={{
 								fontSize: 12,
-								color: "var(--fg-dim)",
+								color: "var(--muted-foreground)",
 								fontFamily: "var(--font-mono)",
 							}}
 						>

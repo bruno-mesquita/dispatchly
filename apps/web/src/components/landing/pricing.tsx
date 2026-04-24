@@ -29,8 +29,8 @@ export function Pricing() {
 		<section
 			style={{
 				padding: "80px 40px",
-				borderBottom: "1px solid var(--hairline)",
-				background: "var(--bg-alt)",
+				borderBottom: "1px solid var(--border)",
+				background: "var(--secondary)",
 			}}
 		>
 			<div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -50,7 +50,7 @@ export function Pricing() {
 							letterSpacing: -1,
 							margin: 0,
 							lineHeight: 1.05,
-							color: "var(--fg)",
+							color: "var(--foreground)",
 						}}
 					>
 						Pay for what you dispatch.{" "}
@@ -71,10 +71,11 @@ export function Pricing() {
 							<div
 								key={p.name}
 								style={{
-									background: p.hi ? "var(--fg)" : "var(--bg)",
-									color: p.hi ? "var(--bg)" : "var(--fg)",
+									background: p.hi ? "var(--foreground)" : "var(--background)",
+									color: p.hi ? "var(--background)" : "var(--foreground)",
 									border:
-										"1px solid " + (p.hi ? "var(--fg)" : "var(--hairline)"),
+										"1px solid " +
+										(p.hi ? "var(--foreground)" : "var(--border)"),
 									borderRadius: 6,
 									padding: 20,
 									display: "flex",
@@ -119,7 +120,7 @@ export function Pricing() {
 										height: 1,
 										background: p.hi
 											? "rgba(250,250,247,0.15)"
-											: "var(--hairline)",
+											: "var(--border)",
 									}}
 								/>
 								<div
@@ -144,8 +145,10 @@ export function Pricing() {
 									type="button"
 									style={{
 										marginTop: "auto",
-										background: p.hi ? "var(--bg)" : "var(--fg)",
-										color: p.hi ? "var(--fg)" : "var(--bg)",
+										background: p.hi
+											? "var(--background)"
+											: "var(--foreground)",
+										color: p.hi ? "var(--foreground)" : "var(--background)",
 										border: "none",
 										borderRadius: 5,
 										padding: "9px 14px",
