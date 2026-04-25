@@ -249,26 +249,26 @@ Defined in `apps/server/.env`, validated by `@dispatchly/env`. See `turbo.json` 
 Ordered execution plan. Total estimate: **3.5 – 4.5 days** of focused work for web-only GA.
 
 ### Phase A — Critical billing fixes (1 day)
-1. Fix `checkQuota` to subtract `Organization.usage[type]` from `PLANS[plan].limits[type]`.
-2. Fix Stripe webhook to persist `stripeCustomerId`; remove `as any`; type via `Stripe.Subscription`.
-3. Handle `invoice.payment_failed` → `past_due`.
-4. Handle `checkout.session.completed` → link `stripeCustomerId`.
-5. BullMQ repeatable cron to reset `Organization.usage` on `currentPeriodStart` rollover.
-6. Remove redundant `Organization.quota` field; migrate code to read `PLANS`.
+1. ✅ Fix `checkQuota` to subtract `Organization.usage[type]` from `PLANS[plan].limits[type]`.
+2. ✅ Fix Stripe webhook to persist `stripeCustomerId`; remove `as any`; type via `Stripe.Subscription`.
+3. ✅ Handle `invoice.payment_failed` → `past_due`.
+4. ✅ Handle `checkout.session.completed` → link `stripeCustomerId`.
+5. ✅ BullMQ repeatable cron to reset `Organization.usage` on `currentPeriodStart` rollover.
+6. ✅ Remove redundant `Organization.quota` field; migrate code to read `PLANS`.
 
 ### Phase B — Complete missing UI (1 – 2 days)
-7. `apps/client/.../dashboard/page.tsx` — overview KPIs (envios mês por canal, % quota usada, últimos 5 logs).
-8. `apps/admin/.../organizations/page.tsx` — paginated list (links to existing `[id]` detail).
-9. `apps/admin/.../subscriptions/page.tsx` — orgs + plan + Stripe status + current period.
-10. `apps/admin/.../analytics/page.tsx` — global totals per channel, top 10 orgs by volume.
-11. `apps/admin/.../logs/page.tsx` — cross-org search, filter by channel/status, cursor pagination.
+7. ✅ `apps/client/.../dashboard/page.tsx` — overview KPIs (envios mês por canal, % quota usada, últimos 5 logs).
+8. ✅ `apps/admin/.../organizations/page.tsx` — paginated list (links to existing `[id]` detail).
+9. ✅ `apps/admin/.../subscriptions/page.tsx` — orgs + plan + Stripe status + current period.
+10. ✅ `apps/admin/.../analytics/page.tsx` — global totals per channel, top 10 orgs by volume.
+11. ✅ `apps/admin/.../logs/page.tsx` — cross-org search, filter by channel/status, cursor pagination.
 
 ### Phase C — Pre-prod hardening (1 day)
-12. Rate-limit middleware in `apps/server` (1k req/min per api-key, 100 req/min per IP for auth).
-13. Email verification flow via Better Auth + `/verify-email` page.
-14. Verify/implement HMAC signing on outbound webhooks.
-15. Minimal audit log (`audit_log` collection + `adminProcedure` middleware).
-16. E2E happy path in `apps/e2e`: signup → create org → create template → send email → see log.
+12. ✅ Rate-limit middleware in `apps/server` (1k req/min per api-key, 100 req/min per IP for auth).
+13. ✅ Email verification flow via Better Auth + `/verify-email` page.
+14. ✅ Verify/implement HMAC signing on outbound webhooks.
+15. ✅ Minimal audit log (`audit_log` collection + `adminProcedure` middleware).
+16. ✅ E2E happy path in `apps/e2e`: signup → create org → create template → send email → see log.
 
 ### Phase D — Deploy (0.5 day)
 17. Multi-stage Dockerfiles for server (Bun) and web/admin/client (Next standalone).

@@ -1,6 +1,7 @@
 import { Organization } from "@dispatchly/db";
 import { z } from "zod";
 import { protectedProcedure, router } from "../index.js";
+import { logAuditAction } from "../services/audit.js";
 
 export const organizationRouter = router({
 	get: protectedProcedure.query(async ({ ctx }) => {
@@ -37,10 +38,22 @@ export const organizationRouter = router({
 				}
 			}
 
-			return Organization.findOneAndUpdate(
+			const org = await Organization.findOneAndUpdate(
 				{ ownerId },
 				{ $set: setFields, $setOnInsert: { ownerId, plan: "free" } },
 				{ upsert: true, new: true },
 			).lean();
+
+			if (org) {
+				await logAuditAction({
+					orgId: String(org._id),
+					userId: ctx.session.user.id,
+					action: "organization.update",
+					resource: String(org._id),
+					metadata: input,
+				});
+			}
+
+			return org;
 		}),
 });
