@@ -6,6 +6,7 @@ import { env } from "@dispatchly/env/server";
 import { cors } from "@elysiajs/cors";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Elysia, t } from "elysia";
+import { rateLimit } from "elysia-rate-limit";
 
 const authInstance = await auth;
 
@@ -18,6 +19,15 @@ new Elysia()
 			methods: ["GET", "POST", "OPTIONS"],
 			allowedHeaders: ["Content-Type", "Authorization"],
 			credentials: true,
+		}),
+	)
+	.use(
+		rateLimit({
+			duration: 60000,
+			max: 100,
+			generator: (req, server) => {
+				return server?.requestIP(req)?.address || "127.0.0.1";
+			},
 		}),
 	)
 	.all("/api/auth/*", async (context) => {
@@ -69,7 +79,6 @@ new Elysia()
 					),
 				);
 
-				// Return the first one as primary ID for simplicity, matching snippet return type
 				return results[0];
 			} catch (error) {
 				set.status = 400;
@@ -83,6 +92,14 @@ new Elysia()
 				channels: t.Array(t.String()),
 				data: t.Record(t.String(), t.Any()),
 			}),
+			rateLimit: {
+				duration: 60000,
+				max: 1000,
+				generator: (req) => {
+					const authHeader = req.headers.get("authorization");
+					return authHeader?.split(" ")[1] || "anonymous";
+				},
+			},
 		},
 	)
 	.get("/", () => "OK")

@@ -1,0 +1,5 @@
+{
+	"extends": "@dispatchly/config/tsconfig.base.json",
+	"include": ["src"],
+	"compilerOptions": { "outDir": "dist" }
+}

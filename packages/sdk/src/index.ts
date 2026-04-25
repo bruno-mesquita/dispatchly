@@ -1,44 +1,36 @@
-export interface DispatchlyConfig {
-	apiKey: string;
-	baseUrl?: string;
-}
+import { HttpClient } from "./client";
+import { Notifications } from "./resources/notifications";
+import { Templates } from "./resources/templates";
+import { Webhooks } from "./resources/webhooks";
+import type { DispatchlyConfig, SendOptions, SendResult } from "./types";
 
-export interface SendOptions {
-	to: string;
-	template: string;
-	channels: ("email" | "sms" | "push")[];
-	data: Record<string, unknown>;
-}
-
-export interface SendResult {
-	id: string;
-	status: string;
-}
+export * from "./errors";
+export * from "./types";
 
 export class Dispatchly {
-	private apiKey: string;
-	private baseUrl: string;
+	private client: HttpClient;
+	public notifications: Notifications;
+	public templates: Templates;
+	public webhooks: Webhooks;
 
 	constructor(config: DispatchlyConfig) {
-		this.apiKey = config.apiKey;
-		this.baseUrl = config.baseUrl || "https://api.dispatchly.com";
+		this.client = new HttpClient(config);
+		this.notifications = new Notifications(this.client);
+		this.templates = new Templates(this.client);
+		this.webhooks = new Webhooks(this.client);
 	}
 
+	/**
+	 * Shortcut to notifications.send
+	 */
 	async send(options: SendOptions): Promise<SendResult> {
-		const response = await fetch(`${this.baseUrl}/v1/send`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${this.apiKey}`,
-			},
-			body: JSON.stringify(options),
-		});
+		return this.notifications.send(options);
+	}
 
-		if (!response.ok) {
-			const error = await response.json();
-			throw new Error(error.error || "Failed to send notification");
-		}
-
-		return response.json();
+	/**
+	 * Shortcut to notifications.batch
+	 */
+	async batch(options: SendOptions[]): Promise<SendResult[]> {
+		return this.notifications.batch(options);
 	}
 }

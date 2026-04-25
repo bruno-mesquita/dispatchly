@@ -1,5 +1,5 @@
-import { checkQuota } from "@dispatchly/billing";
-import { NotificationLog } from "@dispatchly/db";
+import { checkQuota, incrementUsage } from "@dispatchly/billing";
+import { NotificationLog, Template } from "@dispatchly/db";
 import { addToQueue, type JobData } from "@dispatchly/notifications";
 import { applyTemplate } from "@dispatchly/templates";
 
@@ -16,10 +16,9 @@ export async function sendNotification(
 	input: SendNotificationInput,
 	orgId: string,
 ) {
-	const quota = await checkQuota(
-		orgId,
-		input.type === "email" ? "emails" : input.type === "sms" ? "sms" : "push",
-	);
+	const channel =
+		input.type === "email" ? "emails" : input.type === "sms" ? "sms" : "push";
+	const quota = await checkQuota(orgId, channel);
 
 	if (!quota.allowed) {
 		throw new Error("Quota exceeded");
@@ -29,6 +28,22 @@ export async function sendNotification(
 	let subject = input.subject || "";
 
 	if (input.templateId) {
+		const template = await Template.findById(input.templateId);
+		if (!template) {
+			throw new Error("Template not found");
+		}
+
+		// Validate all declared variables are present
+		if (template.variables) {
+			const missing = template.variables.filter(
+				(v) =>
+					input.variables?.[v] === undefined || input.variables?.[v] === null,
+			);
+			if (missing.length > 0) {
+				throw new Error(`Missing variables: ${missing.join(", ")}`);
+			}
+		}
+
 		const rendered = await applyTemplate(
 			input.templateId,
 			input.variables || {},
@@ -64,6 +79,7 @@ export async function sendNotification(
 	};
 
 	await addToQueue(input.type, jobData);
+	await incrementUsage(orgId, channel);
 
 	return { id: log._id, status: "pending" };
 }

@@ -12,16 +12,12 @@ const organizationSchema = new Schema(
 			enum: ["free", "basic", "pro", "enterprise"],
 			default: "free",
 		},
-		quota: {
-			emails: { type: Number, default: 100 },
-			sms: { type: Number, default: 50 },
-			push: { type: Number, default: 100 },
-		},
 		usage: {
 			emails: { type: Number, default: 0 },
 			sms: { type: Number, default: 0 },
 			push: { type: Number, default: 0 },
 		},
+		lastResetAt: { type: Date },
 		settings: {
 			emailProvider: {
 				type: String,

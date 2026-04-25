@@ -2,12 +2,7 @@
 
 import { Badge } from "@dispatchly/ui/components/badge";
 import { Button } from "@dispatchly/ui/components/button";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@dispatchly/ui/components/card";
+import { Input } from "@dispatchly/ui/components/input";
 import { Skeleton } from "@dispatchly/ui/components/skeleton";
 import {
 	Table,
@@ -17,117 +12,199 @@ import {
 	TableHeader,
 	TableRow,
 } from "@dispatchly/ui/components/table";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { trpc } from "@/utils/trpc";
+import { cn } from "@dispatchly/ui/lib/utils";
+import Link from "next/link";
+import { PulseDot } from "@/components/pulse-dot";
+import { useOrganizations } from "@/hooks/use-organizations";
 
-const PLAN_VARIANT: Record<
-	string,
-	"default" | "secondary" | "outline" | "destructive"
-> = {
-	free: "secondary",
-	basic: "outline",
-	pro: "default",
-	enterprise: "default",
+const PLAN_VARIANT: Record<string, string> = {
+	free: "bg-muted text-muted-foreground border-border",
+	basic: "bg-accent-tint text-accent border-accent/20",
+	pro: "bg-primary text-primary-foreground border-primary",
+	enterprise: "bg-primary text-primary-foreground font-bold border-primary",
 };
 
 export function OrganizationsTable() {
-	const [page, setPage] = useState(1);
-	const { data, isLoading } = useQuery(
-		trpc.admin.organizations.list.queryOptions({ page, limit: 20 }),
-	);
+	const { organizations, total, page, setPage, search, setSearch, isLoading } =
+		useOrganizations();
 
-	const totalPages = data ? Math.ceil(data.total / data.limit) : 1;
+	const totalPages = Math.max(1, Math.ceil(total / 20));
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Organizations</CardTitle>
-			</CardHeader>
-			<CardContent>
+		<div className="flex flex-col gap-6">
+			{/* Kicker Header */}
+			<div className="flex flex-col gap-1">
+				<div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
+					<span className="text-accent">02</span>
+					<span className="h-px w-4 bg-border" />
+					<span>Registry</span>
+				</div>
+				<div className="flex items-center justify-between">
+					<h1 className="font-medium text-3xl tracking-tight">Organizations</h1>
+					<div className="relative w-64">
+						<Input
+							placeholder="SEARCH_NODES…"
+							value={search}
+							onChange={(e) => {
+								setSearch(e.target.value);
+								setPage(1);
+							}}
+							className="h-8 border-border bg-muted/20 font-mono text-xs uppercase tracking-tight"
+						/>
+						<span className="pointer-events-none absolute top-2 right-3 text-[9px] text-muted-foreground opacity-50">
+							⌘K
+						</span>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Table */}
+			<div className="overflow-hidden rounded-md border bg-card">
+				<div className="flex items-center justify-between border-b bg-muted/30 px-4 py-2 font-mono text-[11px] text-muted-foreground uppercase tracking-wider">
+					<span>Cluster Nodes</span>
+					<div className="flex items-center gap-4">
+						<span className="opacity-50">Filter: {search || "ALL"}</span>
+						<div className="flex items-center gap-2">
+							<PulseDot size={4} />
+							<span>Active</span>
+						</div>
+					</div>
+				</div>
+
 				{isLoading ? (
-					<div className="space-y-2">
+					<div className="space-y-4 p-4">
 						{Array.from({ length: 5 }).map((_, i) => (
-							<Skeleton key={i} className="h-10 w-full" />
+							<Skeleton key={i} className="h-10 w-full opacity-50" />
 						))}
 					</div>
 				) : (
-					<>
+					<div className="overflow-x-auto">
 						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Name</TableHead>
-									<TableHead>Slug</TableHead>
-									<TableHead>Plan</TableHead>
-									<TableHead>Emails</TableHead>
-									<TableHead>SMS</TableHead>
-									<TableHead>Push</TableHead>
-									<TableHead>Created</TableHead>
+							<TableHeader className="bg-muted/10">
+								<TableRow className="border-b hover:bg-transparent">
+									<TableHead className="h-9 font-mono text-[10px] uppercase">
+										Identity
+									</TableHead>
+									<TableHead className="h-9 font-mono text-[10px] uppercase">
+										Slug
+									</TableHead>
+									<TableHead className="h-9 text-center font-mono text-[10px] uppercase">
+										Tier
+									</TableHead>
+									<TableHead className="h-9 text-center font-mono text-[10px] uppercase">
+										Resources
+									</TableHead>
+									<TableHead className="h-9 text-right font-mono text-[10px] uppercase">
+										Created
+									</TableHead>
+									<TableHead className="h-9 w-10" />
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{data?.items.map((org: any) => (
-									<TableRow key={String(org._id)}>
-										<TableCell className="font-medium">{org.name}</TableCell>
-										<TableCell className="text-muted-foreground">
-											{org.slug}
+								{organizations.map((org) => (
+									<TableRow
+										key={org.id}
+										className="group border-b transition-colors last:border-0 hover:bg-muted/30"
+									>
+										<TableCell className="py-3">
+											<Link
+												href={`/admin/organizations/${org.id}` as any}
+												className="font-medium text-sm transition-colors hover:text-accent"
+											>
+												{org.name}
+											</Link>
 										</TableCell>
-										<TableCell>
-											<Badge variant={PLAN_VARIANT[org.plan] ?? "secondary"}>
-												{org.plan}
-											</Badge>
+										<TableCell className="py-3">
+											<code className="text-[11px] text-muted-foreground group-hover:text-foreground">
+												{org.slug}
+											</code>
 										</TableCell>
-										<TableCell>{org.usage?.emails ?? 0}</TableCell>
-										<TableCell>{org.usage?.sms ?? 0}</TableCell>
-										<TableCell>{org.usage?.push ?? 0}</TableCell>
-										<TableCell className="text-muted-foreground text-sm">
-											{org.createdAt
-												? new Date(org.createdAt).toLocaleDateString()
-												: "—"}
+										<TableCell className="py-3">
+											<div className="flex justify-center">
+												<span
+													className={cn(
+														"inline-flex items-center rounded border px-2 py-0.5 font-bold text-[9px] uppercase tracking-wider",
+														PLAN_VARIANT[org.plan],
+													)}
+												>
+													{org.plan}
+												</span>
+											</div>
+										</TableCell>
+										<TableCell className="py-3">
+											<div className="flex flex-col items-center gap-1 font-mono text-[9px] text-muted-foreground">
+												<div className="flex gap-2">
+													<span>
+														E: {org.usage.emails}/{org.quota.emails}
+													</span>
+													<span>
+														S: {org.usage.sms}/{org.quota.sms}
+													</span>
+													<span>
+														P: {org.usage.push}/{org.quota.push}
+													</span>
+												</div>
+											</div>
+										</TableCell>
+										<TableCell className="py-3 text-right font-mono text-[11px] text-muted-foreground">
+											{new Date(org.createdAt).toLocaleDateString()}
+										</TableCell>
+										<TableCell className="py-3 text-right">
+											<Link
+												href={`/admin/organizations/${org.id}` as any}
+												className="inline-block text-muted-foreground transition-all hover:text-accent"
+											>
+												<span className="font-mono text-[12px]">→</span>
+											</Link>
 										</TableCell>
 									</TableRow>
 								))}
-								{data?.items.length === 0 && (
+								{organizations.length === 0 && (
 									<TableRow>
 										<TableCell
-											colSpan={7}
-											className="text-center text-muted-foreground"
+											colSpan={6}
+											className="h-32 text-center font-mono text-muted-foreground text-xs italic"
 										>
-											No organizations found
+											NODE_NOT_FOUND
 										</TableCell>
 									</TableRow>
 								)}
 							</TableBody>
 						</Table>
-						<div className="mt-4 flex items-center justify-between">
-							<span className="text-muted-foreground text-sm">
-								{data?.total ?? 0} total
-							</span>
-							<div className="flex gap-2">
-								<Button
-									variant="outline"
-									size="sm"
-									disabled={page <= 1}
-									onClick={() => setPage((p) => p - 1)}
-								>
-									Previous
-								</Button>
-								<span className="self-center text-sm">
-									{page} / {totalPages}
-								</span>
-								<Button
-									variant="outline"
-									size="sm"
-									disabled={page >= totalPages}
-									onClick={() => setPage((p) => p + 1)}
-								>
-									Next
-								</Button>
-							</div>
-						</div>
-					</>
+					</div>
 				)}
-			</CardContent>
-		</Card>
+
+				<div className="flex items-center justify-between border-t bg-muted/10 px-4 py-3">
+					<div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider">
+						Nodes: {total}
+					</div>
+					<div className="flex items-center gap-4">
+						<div className="font-mono text-[11px] text-muted-foreground uppercase">
+							Page_{page}_Of_{totalPages}
+						</div>
+						<div className="flex gap-1">
+							<Button
+								variant="outline"
+								size="sm"
+								className="h-7 px-2 font-mono text-[10px] uppercase tracking-wider"
+								disabled={page <= 1}
+								onClick={() => setPage((p) => p - 1)}
+							>
+								Prev
+							</Button>
+							<Button
+								variant="outline"
+								size="sm"
+								className="h-7 px-2 font-mono text-[10px] uppercase tracking-wider"
+								disabled={page >= totalPages}
+								onClick={() => setPage((p) => p + 1)}
+							>
+								Next
+							</Button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	);
 }

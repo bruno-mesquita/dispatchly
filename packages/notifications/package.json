@@ -10,6 +10,7 @@
 		}
 	},
 	"dependencies": {
+		"@dispatchly/db": "workspace:*",
 		"@dispatchly/env": "workspace:*",
 		"resend": "^4.0.0",
 		"twilio": "^5.0.0",

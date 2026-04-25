@@ -6,6 +6,7 @@ import {
 } from "@dispatchly/templates";
 import { z } from "zod";
 import { protectedProcedure, router } from "../index.js";
+import { logAuditAction } from "../services/audit.js";
 
 export const templatesRouter = router({
 	list: protectedProcedure
@@ -15,7 +16,7 @@ export const templatesRouter = router({
 			}),
 		)
 		.query(async ({ input, ctx }) => {
-			return getTemplatesByOrg(ctx.session.user.id, input.type);
+			return getTemplatesByOrg(ctx.orgId, input.type);
 		}),
 	create: protectedProcedure
 		.input(
@@ -28,10 +29,20 @@ export const templatesRouter = router({
 			}),
 		)
 		.mutation(async ({ input, ctx }) => {
-			return createTemplate({
+			const template = await createTemplate({
 				...input,
-				orgId: ctx.session.user.id,
+				orgId: ctx.orgId,
 			});
+
+			await logAuditAction({
+				orgId: ctx.orgId,
+				userId: ctx.session.user.id,
+				action: "template.create",
+				resource: String(template._id),
+				metadata: { name: template.name, type: template.type },
+			});
+
+			return template;
 		}),
 	update: protectedProcedure
 		.input(
@@ -43,13 +54,34 @@ export const templatesRouter = router({
 				isActive: z.boolean().optional(),
 			}),
 		)
-		.mutation(async ({ input }) => {
+		.mutation(async ({ input, ctx }) => {
 			const { id, ...data } = input;
-			return updateTemplate(id, data);
+			const template = await updateTemplate(id, data);
+
+			if (template) {
+				await logAuditAction({
+					orgId: ctx.orgId,
+					userId: ctx.session.user.id,
+					action: "template.update",
+					resource: id,
+					metadata: data,
+				});
+			}
+
+			return template;
 		}),
 	delete: protectedProcedure
 		.input(z.object({ id: z.string() }))
-		.mutation(async ({ input }) => {
-			return deleteTemplate(input.id);
+		.mutation(async ({ input, ctx }) => {
+			const result = await deleteTemplate(input.id);
+
+			await logAuditAction({
+				orgId: ctx.orgId,
+				userId: ctx.session.user.id,
+				action: "template.delete",
+				resource: input.id,
+			});
+
+			return result;
 		}),
 });
