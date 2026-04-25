@@ -5,9 +5,13 @@ import { redirect } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
 const NAV = [
+	{ href: "/admin", label: "Dashboard" },
 	{ href: "/admin/organizations", label: "Organizations" },
+	{ href: "/admin/users", label: "Users" },
 	{ href: "/admin/subscriptions", label: "Subscriptions" },
 	{ href: "/admin/logs", label: "Logs" },
+	{ href: "/admin/templates", label: "Templates" },
+	{ href: "/admin/webhooks", label: "Webhooks" },
 	{ href: "/admin/analytics", label: "Analytics" },
 ];
 

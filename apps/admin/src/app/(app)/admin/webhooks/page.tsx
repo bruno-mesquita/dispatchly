@@ -8,7 +8,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
-import { Input } from "@dispatchly/ui/components/input";
 import { Skeleton } from "@dispatchly/ui/components/skeleton";
 import {
 	Table,
@@ -18,41 +17,18 @@ import {
 	TableHeader,
 	TableRow,
 } from "@dispatchly/ui/components/table";
-import Link from "next/link";
 
-import { useOrganizations } from "@/hooks/use-organizations";
+import { useWebhooks } from "@/hooks/use-webhooks";
 
-const PLAN_VARIANT: Record<
-	string,
-	"default" | "secondary" | "outline" | "destructive"
-> = {
-	free: "secondary",
-	basic: "outline",
-	pro: "default",
-	enterprise: "default",
-};
-
-export function OrganizationsTable() {
-	const { organizations, total, page, setPage, search, setSearch, isLoading } =
-		useOrganizations();
+export default function AdminWebhooksPage() {
+	const { webhooks, total, page, setPage, isLoading } = useWebhooks();
 
 	const totalPages = Math.max(1, Math.ceil(total / 20));
 
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-center justify-between">
-					<CardTitle>Organizations</CardTitle>
-					<Input
-						placeholder="Search by name or slug…"
-						value={search}
-						onChange={(e) => {
-							setSearch(e.target.value);
-							setPage(1);
-						}}
-						className="w-64"
-					/>
-				</div>
+				<CardTitle>Webhooks</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{isLoading ? (
@@ -67,56 +43,46 @@ export function OrganizationsTable() {
 							<TableHeader>
 								<TableRow>
 									<TableHead>Name</TableHead>
-									<TableHead>Slug</TableHead>
-									<TableHead>Plan</TableHead>
-									<TableHead>Emails</TableHead>
-									<TableHead>SMS</TableHead>
-									<TableHead>Push</TableHead>
-									<TableHead>Created</TableHead>
-									<TableHead />
+									<TableHead>Organization</TableHead>
+									<TableHead>URL</TableHead>
+									<TableHead>Events</TableHead>
+									<TableHead>Active</TableHead>
+									<TableHead>Last Triggered</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{organizations.map((org) => (
-									<TableRow key={org.id}>
-										<TableCell className="font-medium">{org.name}</TableCell>
+								{webhooks.map((wh) => (
+									<TableRow key={wh.id}>
+										<TableCell className="font-medium">{wh.name}</TableCell>
 										<TableCell className="text-muted-foreground">
-											{org.slug}
+											{wh.orgName}
 										</TableCell>
-										<TableCell>
-											<Badge variant={PLAN_VARIANT[org.plan] ?? "secondary"}>
-												{org.plan}
-											</Badge>
-										</TableCell>
-										<TableCell>
-											{org.usage.emails} / {org.quota.emails}
-										</TableCell>
-										<TableCell>
-											{org.usage.sms} / {org.quota.sms}
-										</TableCell>
-										<TableCell>
-											{org.usage.push} / {org.quota.push}
+										<TableCell className="max-w-48 truncate font-mono text-muted-foreground text-xs">
+											{wh.url}
 										</TableCell>
 										<TableCell className="text-muted-foreground text-sm">
-											{new Date(org.createdAt).toLocaleDateString()}
+											{wh.events.length} event
+											{wh.events.length !== 1 ? "s" : ""}
 										</TableCell>
 										<TableCell>
-											<Link
-												href={`/admin/organizations/${org.id}` as any}
-												className="text-muted-foreground text-sm hover:text-foreground hover:underline"
-											>
-												View →
-											</Link>
+											<Badge variant={wh.isActive ? "default" : "secondary"}>
+												{wh.isActive ? "Active" : "Inactive"}
+											</Badge>
+										</TableCell>
+										<TableCell className="text-muted-foreground text-sm">
+											{wh.lastTriggeredAt
+												? new Date(wh.lastTriggeredAt).toLocaleString()
+												: "Never"}
 										</TableCell>
 									</TableRow>
 								))}
-								{organizations.length === 0 && (
+								{webhooks.length === 0 && (
 									<TableRow>
 										<TableCell
-											colSpan={8}
+											colSpan={6}
 											className="text-center text-muted-foreground"
 										>
-											No organizations found
+											No webhooks found
 										</TableCell>
 									</TableRow>
 								)}

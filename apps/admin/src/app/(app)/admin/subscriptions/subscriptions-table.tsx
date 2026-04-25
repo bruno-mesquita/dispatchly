@@ -8,6 +8,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@dispatchly/ui/components/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@dispatchly/ui/components/select";
 import { Skeleton } from "@dispatchly/ui/components/skeleton";
 import {
 	Table,
@@ -17,9 +24,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@dispatchly/ui/components/table";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { trpc } from "@/utils/trpc";
+
+import { useSubscriptions } from "@/hooks/use-subscriptions";
 
 const STATUS_VARIANT: Record<
 	string,
@@ -32,17 +38,42 @@ const STATUS_VARIANT: Record<
 };
 
 export function SubscriptionsTable() {
-	const [page, setPage] = useState(1);
-	const { data, isLoading } = useQuery(
-		trpc.admin.subscriptions.list.queryOptions({ page, limit: 20 }),
-	);
+	const {
+		subscriptions,
+		total,
+		page,
+		setPage,
+		statusFilter,
+		setStatusFilter,
+		isLoading,
+	} = useSubscriptions();
 
-	const totalPages = data ? Math.ceil(data.total / data.limit) : 1;
+	const totalPages = Math.max(1, Math.ceil(total / 20));
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Subscriptions</CardTitle>
+				<div className="flex items-center justify-between">
+					<CardTitle>Subscriptions</CardTitle>
+					<Select
+						value={statusFilter}
+						onValueChange={(v) => {
+							setStatusFilter(v as any);
+							setPage(1);
+						}}
+					>
+						<SelectTrigger className="w-36">
+							<SelectValue placeholder="Status" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="all">All statuses</SelectItem>
+							<SelectItem value="active">Active</SelectItem>
+							<SelectItem value="trialing">Trialing</SelectItem>
+							<SelectItem value="past_due">Past due</SelectItem>
+							<SelectItem value="canceled">Canceled</SelectItem>
+						</SelectContent>
+					</Select>
+				</div>
 			</CardHeader>
 			<CardContent>
 				{isLoading ? (
@@ -64,8 +95,8 @@ export function SubscriptionsTable() {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{data?.items.map((sub: any) => (
-									<TableRow key={String(sub._id)}>
+								{subscriptions.map((sub) => (
+									<TableRow key={sub.id}>
 										<TableCell className="font-medium">{sub.orgName}</TableCell>
 										<TableCell>{sub.plan}</TableCell>
 										<TableCell>
@@ -76,16 +107,14 @@ export function SubscriptionsTable() {
 											</Badge>
 										</TableCell>
 										<TableCell className="text-muted-foreground text-sm">
-											{sub.currentPeriodEnd
-												? new Date(sub.currentPeriodEnd).toLocaleDateString()
-												: "—"}
+											{new Date(sub.currentPeriodEnd).toLocaleDateString()}
 										</TableCell>
 										<TableCell className="font-mono text-muted-foreground text-xs">
-											{sub.stripeCustomerId ?? "—"}
+											{sub.stripeCustomerId}
 										</TableCell>
 									</TableRow>
 								))}
-								{data?.items.length === 0 && (
+								{subscriptions.length === 0 && (
 									<TableRow>
 										<TableCell
 											colSpan={5}
@@ -99,7 +128,7 @@ export function SubscriptionsTable() {
 						</Table>
 						<div className="mt-4 flex items-center justify-between">
 							<span className="text-muted-foreground text-sm">
-								{data?.total ?? 0} total
+								{total} total
 							</span>
 							<div className="flex gap-2">
 								<Button

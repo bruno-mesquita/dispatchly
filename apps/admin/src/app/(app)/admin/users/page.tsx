@@ -18,23 +18,12 @@ import {
 	TableHeader,
 	TableRow,
 } from "@dispatchly/ui/components/table";
-import Link from "next/link";
 
-import { useOrganizations } from "@/hooks/use-organizations";
+import { useUsers } from "@/hooks/use-users";
 
-const PLAN_VARIANT: Record<
-	string,
-	"default" | "secondary" | "outline" | "destructive"
-> = {
-	free: "secondary",
-	basic: "outline",
-	pro: "default",
-	enterprise: "default",
-};
-
-export function OrganizationsTable() {
-	const { organizations, total, page, setPage, search, setSearch, isLoading } =
-		useOrganizations();
+export default function AdminUsersPage() {
+	const { users, total, page, setPage, search, setSearch, isLoading } =
+		useUsers();
 
 	const totalPages = Math.max(1, Math.ceil(total / 20));
 
@@ -42,9 +31,9 @@ export function OrganizationsTable() {
 		<Card>
 			<CardHeader>
 				<div className="flex items-center justify-between">
-					<CardTitle>Organizations</CardTitle>
+					<CardTitle>Users</CardTitle>
 					<Input
-						placeholder="Search by name or slug…"
+						placeholder="Search by name or email…"
 						value={search}
 						onChange={(e) => {
 							setSearch(e.target.value);
@@ -67,56 +56,41 @@ export function OrganizationsTable() {
 							<TableHeader>
 								<TableRow>
 									<TableHead>Name</TableHead>
-									<TableHead>Slug</TableHead>
-									<TableHead>Plan</TableHead>
-									<TableHead>Emails</TableHead>
-									<TableHead>SMS</TableHead>
-									<TableHead>Push</TableHead>
+									<TableHead>Email</TableHead>
+									<TableHead>Verified</TableHead>
+									<TableHead>Sessions</TableHead>
 									<TableHead>Created</TableHead>
-									<TableHead />
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{organizations.map((org) => (
-									<TableRow key={org.id}>
-										<TableCell className="font-medium">{org.name}</TableCell>
-										<TableCell className="text-muted-foreground">
-											{org.slug}
+								{users.map((user) => (
+									<TableRow key={user.id}>
+										<TableCell className="font-medium">{user.name}</TableCell>
+										<TableCell className="font-mono text-sm">
+											{user.email}
 										</TableCell>
 										<TableCell>
-											<Badge variant={PLAN_VARIANT[org.plan] ?? "secondary"}>
-												{org.plan}
+											<Badge
+												variant={user.emailVerified ? "default" : "secondary"}
+											>
+												{user.emailVerified ? "Verified" : "Unverified"}
 											</Badge>
 										</TableCell>
-										<TableCell>
-											{org.usage.emails} / {org.quota.emails}
-										</TableCell>
-										<TableCell>
-											{org.usage.sms} / {org.quota.sms}
-										</TableCell>
-										<TableCell>
-											{org.usage.push} / {org.quota.push}
+										<TableCell className="text-muted-foreground">
+											{user.sessionCount}
 										</TableCell>
 										<TableCell className="text-muted-foreground text-sm">
-											{new Date(org.createdAt).toLocaleDateString()}
-										</TableCell>
-										<TableCell>
-											<Link
-												href={`/admin/organizations/${org.id}` as any}
-												className="text-muted-foreground text-sm hover:text-foreground hover:underline"
-											>
-												View →
-											</Link>
+											{new Date(user.createdAt).toLocaleDateString()}
 										</TableCell>
 									</TableRow>
 								))}
-								{organizations.length === 0 && (
+								{users.length === 0 && (
 									<TableRow>
 										<TableCell
-											colSpan={8}
+											colSpan={5}
 											className="text-center text-muted-foreground"
 										>
-											No organizations found
+											No users found
 										</TableCell>
 									</TableRow>
 								)}
