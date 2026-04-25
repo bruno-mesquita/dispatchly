@@ -1,4 +1,9 @@
-import { NotificationLog, Organization, Subscription } from "@dispatchly/db";
+import {
+	NotificationLog,
+	Organization,
+	Subscription,
+	Webhook,
+} from "@dispatchly/db";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -90,6 +95,49 @@ export const adminRouter = router({
 				limit: input.limit,
 			};
 		}),
+	}),
+
+	webhooks: router({
+		list: adminProcedure
+			.input(
+				pagination.extend({
+					orgId: z.string().optional(),
+				}),
+			)
+			.query(async ({ input }) => {
+				const { page, limit, orgId } = input;
+				const filter: Record<string, unknown> = {};
+				if (orgId) filter.orgId = orgId;
+
+				const skip = (page - 1) * limit;
+				const [items, total] = await Promise.all([
+					Webhook.find(filter)
+						.sort({ createdAt: -1 })
+						.skip(skip)
+						.limit(limit)
+						.lean(),
+					Webhook.countDocuments(filter),
+				]);
+
+				const orgIds = [...new Set(items.map((w) => w.orgId))];
+				const orgs = await Organization.find({ _id: { $in: orgIds } })
+					.select("_id name")
+					.lean();
+				const orgMap = Object.fromEntries(
+					orgs.map((o) => [String(o._id), o.name]),
+				);
+
+				return {
+					items: items.map((w) => ({
+						...w,
+						id: String(w._id),
+						orgName: orgMap[String(w.orgId)] ?? String(w.orgId),
+					})),
+					total,
+					page,
+					limit,
+				};
+			}),
 	}),
 
 	logs: router({
