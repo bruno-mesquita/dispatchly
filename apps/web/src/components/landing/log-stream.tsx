@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 
 const LOG_SAMPLES = [
@@ -10,7 +12,12 @@ const LOG_SAMPLES = [
 	{ lvl: "ok", ch: "push", msg: "delivered · Android · device_c71e", ms: 44 },
 	{ lvl: "ok", ch: "sms", msg: "delivered · +44 20 7946 0718", ms: 108 },
 	{ lvl: "err", ch: "email", msg: "suppressed · unsubscribed_list", ms: 8 },
-	{ lvl: "ok", ch: "email", msg: "delivered · user_1190@stripe.dev", ms: 167 },
+	{
+		lvl: "ok",
+		ch: "email",
+		msg: "delivered · user_1190@stripe.dev",
+		ms: 167,
+	},
 	{ lvl: "ok", ch: "push", msg: "opened · device_4f19", ms: 920 },
 	{ lvl: "ok", ch: "sms", msg: "delivered · +55 11 99876-5432", ms: 134 },
 ] as const;
@@ -86,7 +93,12 @@ export function LogStream({
 						animation: "dpl-fadein .35s ease-out",
 					}}
 				>
-					<span style={{ color: "var(--code-dim)", whiteSpace: "nowrap" }}>
+					<span
+						style={{
+							color: "var(--code-dim)",
+							whiteSpace: "nowrap",
+						}}
+					>
 						{fmt(r.ts)}
 					</span>
 					<span style={{ color: lvlColor[r.lvl], fontWeight: 600 }}>
@@ -113,7 +125,12 @@ export function LogStream({
 					>
 						{r.msg}
 					</span>
-					<span style={{ color: "var(--code-dim)", whiteSpace: "nowrap" }}>
+					<span
+						style={{
+							color: "var(--code-dim)",
+							whiteSpace: "nowrap",
+						}}
+					>
 						{r.ms}ms
 					</span>
 				</div>

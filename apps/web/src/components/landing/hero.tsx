@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { CODE_SAMPLES, CodeBlock } from "./code-block";
 import { LogStream } from "./log-stream";
@@ -31,7 +33,13 @@ export function Hero() {
 						"radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)",
 				}}
 			/>
-			<div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
+			<div
+				style={{
+					maxWidth: 1200,
+					margin: "0 auto",
+					position: "relative",
+				}}
+			>
 				<div
 					style={{
 						display: "flex",
@@ -46,7 +54,13 @@ export function Hero() {
 					}}
 				>
 					<span style={{ color: "var(--accent)" }}>01</span>
-					<span style={{ width: 18, height: 1, background: "var(--accent)" }} />
+					<span
+						style={{
+							width: 18,
+							height: 1,
+							background: "var(--accent)",
+						}}
+					/>
 					<span>Dispatch orchestration · v4</span>
 				</div>
 				<h1
@@ -121,7 +135,11 @@ export function Hero() {
 				</div>
 
 				<div
-					style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 20 }}
+					style={{
+						display: "grid",
+						gridTemplateColumns: "1.3fr 1fr",
+						gap: 20,
+					}}
 				>
 					<CodeBlock
 						code={sample.code}

@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	CTA,
 	FeatureStrip,
