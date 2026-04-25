@@ -1,11 +1,19 @@
 import { apiKey } from "@better-auth/api-key";
+import { stripe } from "@better-auth/stripe";
 import { client } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { admin, organization, stripe } from "better-auth/plugins";
+import { admin, organization } from "better-auth/plugins";
+import Stripe from "stripe";
 
 export function createAuth() {
+	const stripeClient = env.STRIPE_SECRET_KEY
+		? new Stripe(env.STRIPE_SECRET_KEY, {
+				apiVersion: "2026-03-25.dahlia" as any,
+			})
+		: null;
+
 	return betterAuth({
 		database: mongodbAdapter(client),
 		trustedOrigins: [env.CORS_ORIGIN],
@@ -26,10 +34,14 @@ export function createAuth() {
 			apiKey(),
 			organization(),
 			admin(),
-			stripe({
-				stripeClient: null, // Initialized on demand if needed
-				stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
-			}),
+			...(stripeClient && env.STRIPE_WEBHOOK_SECRET
+				? [
+						stripe({
+							stripeClient: stripeClient as any,
+							stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
+						}),
+					]
+				: []),
 		],
 	});
 }

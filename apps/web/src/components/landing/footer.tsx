@@ -1,7 +1,12 @@
 import { DWordmark } from "./logo";
 import { PulseDot } from "./pulse-dot";
 
-const FOOTER_COLS: ReadonlyArray<readonly [string, readonly string[]]> = [
+const FOOTER_COLS: ReadonlyArray<
+	readonly [
+		string,
+		ReadonlyArray<{ readonly label: string; readonly href: string }>,
+	]
+> = [
 	[
 		"Product",
 		[
