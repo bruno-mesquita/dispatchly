@@ -1,4 +1,4 @@
-import { checkQuota } from "@dispatchly/billing";
+import { checkQuota, incrementUsage } from "@dispatchly/billing";
 import { NotificationLog } from "@dispatchly/db";
 import { addToQueue, type JobData } from "@dispatchly/notifications";
 import { applyTemplate } from "@dispatchly/templates";
@@ -16,10 +16,9 @@ export async function sendNotification(
 	input: SendNotificationInput,
 	orgId: string,
 ) {
-	const quota = await checkQuota(
-		orgId,
-		input.type === "email" ? "emails" : input.type === "sms" ? "sms" : "push",
-	);
+	const channel =
+		input.type === "email" ? "emails" : input.type === "sms" ? "sms" : "push";
+	const quota = await checkQuota(orgId, channel);
 
 	if (!quota.allowed) {
 		throw new Error("Quota exceeded");
@@ -64,6 +63,7 @@ export async function sendNotification(
 	};
 
 	await addToQueue(input.type, jobData);
+	await incrementUsage(orgId, channel);
 
 	return { id: log._id, status: "pending" };
 }

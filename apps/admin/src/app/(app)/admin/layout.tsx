@@ -1,9 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
+import { PulseDot } from "@/components/pulse-dot";
 import { authClient } from "@/lib/auth-client";
 import { AdminNav } from "./admin-nav";
-import { PulseDot } from "@/components/pulse-dot";
 
 export default async function AdminLayout({
 	children,
@@ -19,9 +18,9 @@ export default async function AdminLayout({
 	}
 
 	return (
-		<div className="flex h-[calc(100vh-45px)] flex-col overflow-hidden bg-background text-foreground">
+		<div className="flex h-full flex-col overflow-hidden bg-background text-foreground">
 			{/* Console Toolbar */}
-			<header className="flex h-10 shrink-0 items-center justify-between border-b bg-secondary/30 px-4 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+			<header className="flex h-10 shrink-0 items-center justify-between border-b bg-secondary/30 px-4 font-mono text-[11px] text-muted-foreground uppercase tracking-wider">
 				<div className="flex items-center gap-4">
 					<div className="flex gap-1.5">
 						<div className="h-2 w-2 rounded-full bg-border" />
@@ -35,9 +34,9 @@ export default async function AdminLayout({
 						<PulseDot size={5} />
 						<span className="text-foreground">live · production</span>
 					</div>
-					<div className="flex items-center gap-2 border-l border-border pl-6">
+					<div className="flex items-center gap-2 border-border border-l pl-6">
 						<span>{session.user.email}</span>
-						<span className="text-accent font-bold">[ADMIN]</span>
+						<span className="font-bold text-accent">[ADMIN]</span>
 					</div>
 				</div>
 			</header>
@@ -46,7 +45,7 @@ export default async function AdminLayout({
 				{/* Sidebar */}
 				<aside className="flex w-52 shrink-0 flex-col border-r bg-background font-mono text-[12.5px]">
 					<div className="flex-1 overflow-y-auto p-4">
-						<p className="mb-4 px-2.5 font-bold text-muted-foreground text-[10px] uppercase tracking-widest opacity-50">
+						<p className="mb-4 px-2.5 font-bold text-[10px] text-muted-foreground uppercase tracking-widest opacity-50">
 							[Console Menu]
 						</p>
 						<AdminNav />
