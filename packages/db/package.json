@@ -21,7 +21,7 @@
 	"dependencies": {
 		"@dispatchly/env": "workspace:*",
 		"dotenv": "catalog:",
-		"mongoose": "^8.14.0",
+		"mongoose": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

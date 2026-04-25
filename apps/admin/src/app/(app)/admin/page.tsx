@@ -115,7 +115,7 @@ export default function AdminDashboardPage() {
 						<div className="flex items-center justify-between border-b bg-muted/30 px-4 py-2 font-mono text-[11px] text-muted-foreground uppercase tracking-wider">
 							<span>Transaction Flow</span>
 							<Link
-								href="/admin/logs"
+								href={"/admin/logs" as any}
 								className="transition-colors hover:text-accent"
 							>
 								[VIEW_ALL]
@@ -239,7 +239,7 @@ export default function AdminDashboardPage() {
 				</div>
 				<div className="border-white/5 border-t bg-code-bar p-3 text-center">
 					<Link
-						href="/admin/logs"
+						href={"/admin/logs" as any}
 						className="font-mono text-[10px] text-code-dim uppercase tracking-widest transition-colors hover:text-code-fg"
 					>
 						View full trace log →
