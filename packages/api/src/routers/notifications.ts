@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { NotificationLog } from "@dispatchly/db";
+import { z } from "zod";
 import { protectedProcedure, router } from "../index.js";
 import { sendNotification } from "../services/notifications.js";
 
@@ -16,7 +16,7 @@ export const notificationsRouter = router({
 			}),
 		)
 		.mutation(async ({ input, ctx }) => {
-			return sendNotification(input, ctx.session.user.id);
+			return sendNotification(input, ctx.orgId);
 		}),
 	list: protectedProcedure
 		.input(
@@ -28,7 +28,7 @@ export const notificationsRouter = router({
 			}),
 		)
 		.query(async ({ input, ctx }) => {
-			const query: Record<string, unknown> = { orgId: ctx.session.user.id };
+			const query: Record<string, unknown> = { orgId: ctx.orgId };
 			if (input.type) query.type = input.type;
 			if (input.status) query.status = input.status;
 
@@ -38,7 +38,7 @@ export const notificationsRouter = router({
 				.skip(input.offset);
 		}),
 	stats: protectedProcedure.query(async ({ ctx }) => {
-		const orgId = ctx.session.user.id;
+		const orgId = ctx.orgId;
 		const stats = await NotificationLog.aggregate([
 			{ $match: { orgId } },
 			{

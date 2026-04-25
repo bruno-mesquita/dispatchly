@@ -15,7 +15,7 @@ export const templatesRouter = router({
 			}),
 		)
 		.query(async ({ input, ctx }) => {
-			return getTemplatesByOrg(ctx.session.user.id, input.type);
+			return getTemplatesByOrg(ctx.orgId, input.type);
 		}),
 	create: protectedProcedure
 		.input(
@@ -30,7 +30,7 @@ export const templatesRouter = router({
 		.mutation(async ({ input, ctx }) => {
 			return createTemplate({
 				...input,
-				orgId: ctx.session.user.id,
+				orgId: ctx.orgId,
 			});
 		}),
 	update: protectedProcedure

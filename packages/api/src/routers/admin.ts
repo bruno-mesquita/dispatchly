@@ -1,4 +1,5 @@
 import { NotificationLog, Organization, Subscription } from "@dispatchly/db";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { adminProcedure, router } from "../index.js";
@@ -22,6 +23,47 @@ export const adminRouter = router({
 			]);
 			return { items, total, page: input.page, limit: input.limit };
 		}),
+
+		get: adminProcedure
+			.input(z.object({ id: z.string() }))
+			.query(async ({ input }) => {
+				const org = await Organization.findOne({ _id: input.id }).lean();
+				if (!org) {
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Organization not found",
+					});
+				}
+				const subscription = await Subscription.findOne({
+					orgId: input.id,
+				}).lean();
+				return { ...org, subscription };
+			}),
+
+		update: adminProcedure
+			.input(
+				z.object({
+					id: z.string(),
+					plan: z.enum(["free", "basic", "pro", "enterprise"]).optional(),
+				}),
+			)
+			.mutation(async ({ input }) => {
+				const update: Record<string, unknown> = {};
+				if (input.plan) update.plan = input.plan;
+				const org = await Organization.findOneAndUpdate(
+					{ _id: input.id },
+					{ $set: update },
+					{ new: true },
+				).lean();
+				if (input.plan) {
+					await Subscription.findOneAndUpdate(
+						{ orgId: input.id },
+						{ $set: { plan: input.plan } },
+						{ upsert: true, setDefaultsOnInsert: true },
+					);
+				}
+				return org;
+			}),
 	}),
 
 	subscriptions: router({
