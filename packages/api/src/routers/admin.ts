@@ -1,4 +1,10 @@
-import { NotificationLog, Organization, Subscription } from "@dispatchly/db";
+import {
+	NotificationLog,
+	Organization,
+	Subscription,
+	Webhook,
+} from "@dispatchly/db";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { adminProcedure, router } from "../index.js";
@@ -22,6 +28,47 @@ export const adminRouter = router({
 			]);
 			return { items, total, page: input.page, limit: input.limit };
 		}),
+
+		get: adminProcedure
+			.input(z.object({ id: z.string() }))
+			.query(async ({ input }) => {
+				const org = await Organization.findOne({ _id: input.id }).lean();
+				if (!org) {
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Organization not found",
+					});
+				}
+				const subscription = await Subscription.findOne({
+					orgId: input.id,
+				}).lean();
+				return { ...org, subscription };
+			}),
+
+		update: adminProcedure
+			.input(
+				z.object({
+					id: z.string(),
+					plan: z.enum(["free", "basic", "pro", "enterprise"]).optional(),
+				}),
+			)
+			.mutation(async ({ input }) => {
+				const update: Record<string, unknown> = {};
+				if (input.plan) update.plan = input.plan;
+				const org = await Organization.findOneAndUpdate(
+					{ _id: input.id },
+					{ $set: update },
+					{ new: true },
+				).lean();
+				if (input.plan) {
+					await Subscription.findOneAndUpdate(
+						{ orgId: input.id },
+						{ $set: { plan: input.plan } },
+						{ upsert: true, setDefaultsOnInsert: true },
+					);
+				}
+				return org;
+			}),
 	}),
 
 	subscriptions: router({
@@ -48,6 +95,49 @@ export const adminRouter = router({
 				limit: input.limit,
 			};
 		}),
+	}),
+
+	webhooks: router({
+		list: adminProcedure
+			.input(
+				pagination.extend({
+					orgId: z.string().optional(),
+				}),
+			)
+			.query(async ({ input }) => {
+				const { page, limit, orgId } = input;
+				const filter: Record<string, unknown> = {};
+				if (orgId) filter.orgId = orgId;
+
+				const skip = (page - 1) * limit;
+				const [items, total] = await Promise.all([
+					Webhook.find(filter)
+						.sort({ createdAt: -1 })
+						.skip(skip)
+						.limit(limit)
+						.lean(),
+					Webhook.countDocuments(filter),
+				]);
+
+				const orgIds = [...new Set(items.map((w) => w.orgId))];
+				const orgs = await Organization.find({ _id: { $in: orgIds } })
+					.select("_id name")
+					.lean();
+				const orgMap = Object.fromEntries(
+					orgs.map((o) => [String(o._id), o.name]),
+				);
+
+				return {
+					items: items.map((w) => ({
+						...w,
+						id: String(w._id),
+						orgName: orgMap[String(w.orgId)] ?? String(w.orgId),
+					})),
+					total,
+					page,
+					limit,
+				};
+			}),
 	}),
 
 	logs: router({

@@ -1,14 +1,18 @@
+import { apiKey } from "@better-auth/api-key";
 import { client } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { apiKey } from "@better-auth/api-key";
+import { admin, organization, stripe } from "better-auth/plugins";
 
 export function createAuth() {
 	return betterAuth({
 		database: mongodbAdapter(client),
 		trustedOrigins: [env.CORS_ORIGIN],
-		emailAndPassword: { enabled: true },
+		emailAndPassword: {
+			enabled: true,
+			requireEmailVerification: true,
+		},
 		secret: env.BETTER_AUTH_SECRET,
 		baseURL: env.BETTER_AUTH_URL,
 		advanced: {
@@ -18,7 +22,15 @@ export function createAuth() {
 				httpOnly: true,
 			},
 		},
-		plugins: [apiKey()],
+		plugins: [
+			apiKey(),
+			organization(),
+			admin(),
+			stripe({
+				stripeClient: null, // Initialized on demand if needed
+				stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
+			}),
+		],
 	});
 }
 

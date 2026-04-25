@@ -2,6 +2,9 @@
 
 This file serves as the primary technical context for AI agents (Gemini, Claude) and developers working on the `dispatchly` project.
 
+> [!IMPORTANT]
+> **Operational Knowledge:** For business rules, domain invariants, notification lifecycles, and the current implementation state, **always consult [MEMORY.md](MEMORY.md)** in conjunction with this file.
+
 ## Project Overview
 `dispatchly` is a multi-channel Notification-as-a-Service (SaaS) platform built with the **Better T Stack**. It allows organizations to send emails (via Resend), SMS (via Twilio), and push notifications (via Expo) with full tracking, automatic retries via BullMQ, and template management.
 

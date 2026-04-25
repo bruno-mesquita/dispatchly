@@ -13,7 +13,13 @@ import { checkQuota, PLANS } from "./index.js";
 mock.module("@dispatchly/db", () => {
 	return {
 		Subscription: {
-			findOne: mock(() => Promise.resolve({ plan: "free" })),
+			findOne: mock(() => Promise.resolve({ plan: "free", status: "active" })),
+		},
+		Organization: {
+			findOne: mock(() =>
+				Promise.resolve({ usage: { emails: 0, sms: 0, push: 0 } }),
+			),
+			updateOne: mock(() => Promise.resolve({ acknowledged: true })),
 		},
 	};
 });
@@ -26,7 +32,64 @@ describe("Billing System", () => {
 
 	it("should check quota correctly", async () => {
 		const result = await checkQuota("org_1", "emails");
-		expect(result.allowed).toBeDefined();
-		expect(result.remaining).toBeDefined();
+		expect(result.allowed).toBe(true);
+		expect(result.remaining).toBe(100);
+	});
+
+	it("enterprise plan returns unlimited remaining", async () => {
+		mock.module("@dispatchly/db", () => ({
+			Subscription: {
+				findOne: mock(() =>
+					Promise.resolve({ plan: "enterprise", status: "active" }),
+				),
+			},
+			Organization: {
+				findOne: mock(() =>
+					Promise.resolve({ usage: { emails: 99999, sms: 0, push: 0 } }),
+				),
+				updateOne: mock(() => Promise.resolve({ acknowledged: true })),
+			},
+		}));
+		const result = await checkQuota("org_1", "emails");
+		expect(result.allowed).toBe(true);
+		expect(result.remaining).toBe(-1);
+	});
+
+	it("past_due downgrades to free limits", async () => {
+		mock.module("@dispatchly/db", () => ({
+			Subscription: {
+				findOne: mock(() =>
+					Promise.resolve({ plan: "pro", status: "past_due" }),
+				),
+			},
+			Organization: {
+				findOne: mock(() =>
+					Promise.resolve({ usage: { emails: 50, sms: 0, push: 0 } }),
+				),
+				updateOne: mock(() => Promise.resolve({ acknowledged: true })),
+			},
+		}));
+		const result = await checkQuota("org_1", "emails");
+		expect(result.allowed).toBe(true);
+		expect(result.remaining).toBe(50);
+	});
+
+	it("blocks send when over limit", async () => {
+		mock.module("@dispatchly/db", () => ({
+			Subscription: {
+				findOne: mock(() =>
+					Promise.resolve({ plan: "free", status: "active" }),
+				),
+			},
+			Organization: {
+				findOne: mock(() =>
+					Promise.resolve({ usage: { emails: 100, sms: 0, push: 0 } }),
+				),
+				updateOne: mock(() => Promise.resolve({ acknowledged: true })),
+			},
+		}));
+		const result = await checkQuota("org_1", "emails");
+		expect(result.allowed).toBe(false);
+		expect(result.remaining).toBe(0);
 	});
 });

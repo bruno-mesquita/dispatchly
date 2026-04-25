@@ -1,3 +1,4 @@
+import { Organization } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 
@@ -9,7 +10,7 @@ export const router = t.router;
 
 export const publicProcedure = t.procedure;
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
 	if (!ctx.session) {
 		throw new TRPCError({
 			code: "UNAUTHORIZED",
@@ -17,10 +18,21 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 			cause: "No session",
 		});
 	}
+	const userId = ctx.session.user.id;
+	const org = await Organization.findOne({ ownerId: userId })
+		.select("_id")
+		.lean();
+	if (!org) {
+		throw new TRPCError({
+			code: "NOT_FOUND",
+			message: "Organization not found for current user",
+		});
+	}
 	return next({
 		ctx: {
 			...ctx,
 			session: ctx.session,
+			orgId: String(org._id),
 		},
 	});
 });
