@@ -62,6 +62,15 @@ mock.module("@dispatchly/db", () => {
 				}),
 			})),
 		},
+		Template: {
+			findById: mock((id) =>
+				Promise.resolve({
+					_id: id,
+					variables: ["name"],
+					content: "Hello {{name}}",
+				}),
+			),
+		},
 		client: {
 			db: () => ({}),
 		},

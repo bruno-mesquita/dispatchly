@@ -1,5 +1,5 @@
 import { checkQuota, incrementUsage } from "@dispatchly/billing";
-import { NotificationLog } from "@dispatchly/db";
+import { NotificationLog, Template } from "@dispatchly/db";
 import { addToQueue, type JobData } from "@dispatchly/notifications";
 import { applyTemplate } from "@dispatchly/templates";
 
@@ -28,6 +28,22 @@ export async function sendNotification(
 	let subject = input.subject || "";
 
 	if (input.templateId) {
+		const template = await Template.findById(input.templateId);
+		if (!template) {
+			throw new Error("Template not found");
+		}
+
+		// Validate all declared variables are present
+		if (template.variables) {
+			const missing = template.variables.filter(
+				(v) =>
+					input.variables?.[v] === undefined || input.variables?.[v] === null,
+			);
+			if (missing.length > 0) {
+				throw new Error(`Missing variables: ${missing.join(", ")}`);
+			}
+		}
+
 		const rendered = await applyTemplate(
 			input.templateId,
 			input.variables || {},
