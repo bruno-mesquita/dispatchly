@@ -25,13 +25,19 @@ export function Nav() {
 					color: "var(--muted-foreground)",
 				}}
 			>
-				{["Product", "Docs", "Pricing", "Changelog", "Customers"].map((l) => (
+				{[
+					{ label: "Product", href: "/" },
+					{ label: "Docs", href: "/docs" },
+					{ label: "Pricing", href: "/pricing" },
+					{ label: "Changelog", href: "/changelog" },
+					{ label: "Customers", href: "/customers" },
+				].map((l) => (
 					<a
-						key={l}
-						href="/"
+						key={l.label}
+						href={l.href}
 						style={{ color: "inherit", textDecoration: "none" }}
 					>
-						{l}
+						{l.label}
 					</a>
 				))}
 			</div>

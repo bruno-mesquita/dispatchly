@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { useBatchNotifications } from "@/hooks/use-batch-notifications";
+import { Kicker } from "@/components/kicker";
 import type { LogType } from "@/hooks/use-notification-logs";
 
 type InputMode = "json" | "csv";
@@ -93,18 +94,25 @@ export default function BatchPage() {
 	}
 
 	return (
-		<div className="p-8">
-			<h1 className="mb-6 font-semibold text-2xl">Envio em Lote</h1>
+		<div className="p-6 lg:p-10 space-y-8">
+			<header>
+				<Kicker num="03" label="Batch Operations" />
+				<h1 className="font-sans text-3xl font-medium tracking-tight">
+					Bulk Ingest — <span className="text-muted-foreground">CSV / JSON payloads.</span>
+				</h1>
+			</header>
 
-			<div className="grid gap-6 lg:grid-cols-2">
-				<Card>
-					<CardHeader>
-						<CardTitle className="text-base">Configuração</CardTitle>
+			<div className="grid gap-8 lg:grid-cols-2">
+				<Card className="border-hairline bg-muted/5 shadow-none">
+					<CardHeader className="border-b px-6 py-4">
+						<CardTitle className="font-mono text-[11px] tracking-wider uppercase text-muted-foreground">
+							Execution Plan
+						</CardTitle>
 					</CardHeader>
-					<CardContent>
-						<form onSubmit={handleSubmit} className="space-y-4">
+					<CardContent className="p-6">
+						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-1.5">
-								<Label>Tipo</Label>
+								<Label className="font-mono text-[10px] uppercase opacity-60">Channel Type</Label>
 								<Select
 									value={type}
 									onValueChange={(v) => {
@@ -112,10 +120,10 @@ export default function BatchPage() {
 										setTemplateId("");
 									}}
 								>
-									<SelectTrigger>
+									<SelectTrigger className="font-mono text-[12px] bg-background">
 										<SelectValue />
 									</SelectTrigger>
-									<SelectContent>
+									<SelectContent className="font-mono text-[12px]">
 										<SelectItem value="email">Email</SelectItem>
 										<SelectItem value="sms">SMS</SelectItem>
 										<SelectItem value="push">Push</SelectItem>
@@ -125,18 +133,18 @@ export default function BatchPage() {
 
 							{availableTemplates.length > 0 && (
 								<div className="space-y-1.5">
-									<Label>Template (opcional)</Label>
+									<Label className="font-mono text-[10px] uppercase opacity-60">Template (Optional)</Label>
 									<Select
 										value={templateId || "none"}
 										onValueChange={(v) =>
 											setTemplateId(!v || v === "none" ? "" : v)
 										}
 									>
-										<SelectTrigger>
+										<SelectTrigger className="font-mono text-[12px] bg-background">
 											<SelectValue placeholder="Sem template" />
 										</SelectTrigger>
-										<SelectContent>
-											<SelectItem value="none">Sem template</SelectItem>
+										<SelectContent className="font-mono text-[12px]">
+											<SelectItem value="none">No template</SelectItem>
 											{availableTemplates.map((t) => (
 												<SelectItem key={t.id} value={t.id}>
 													{t.name}
@@ -149,10 +157,10 @@ export default function BatchPage() {
 
 							{type === "email" && (
 								<div className="space-y-1.5">
-									<Label>Assunto</Label>
+									<Label className="font-mono text-[10px] uppercase opacity-60">Global Subject</Label>
 									<input
-										className="w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-										placeholder="Assunto do email"
+										className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-[12px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+										placeholder="Email subject"
 										value={subject}
 										onChange={(e) => setSubject(e.target.value)}
 									/>
@@ -160,29 +168,29 @@ export default function BatchPage() {
 							)}
 
 							<div className="space-y-1.5">
-								<Label>Conteúdo</Label>
+								<Label className="font-mono text-[10px] uppercase opacity-60">Fallback Content</Label>
 								<textarea
-									className="min-h-20 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-									placeholder="Conteúdo. Use {{variavel}} para interpolação."
+									className="min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-[12px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+									placeholder="Use {{variable}} for interpolation"
 									value={content}
 									onChange={(e) => setContent(e.target.value)}
 								/>
 							</div>
 
-							<div className="space-y-1.5">
-								<Label>Destinatários</Label>
-								<div className="flex gap-2">
+							<div className="space-y-3">
+								<Label className="font-mono text-[10px] uppercase opacity-60">Ingest Source</Label>
+								<div className="flex gap-1 p-1 rounded-md border bg-muted/20 w-fit">
 									<button
 										type="button"
 										onClick={() => setMode("json")}
-										className={`rounded-md px-3 py-1.5 text-sm transition-colors ${mode === "json" ? "bg-primary text-primary-foreground" : "border hover:bg-accent"}`}
+										className={`rounded-sm px-3 py-1 text-[10px] font-mono uppercase tracking-wider transition-colors ${mode === "json" ? "bg-foreground text-background shadow-sm" : "text-muted-foreground hover:bg-muted"}`}
 									>
 										JSON
 									</button>
 									<button
 										type="button"
 										onClick={() => setMode("csv")}
-										className={`rounded-md px-3 py-1.5 text-sm transition-colors ${mode === "csv" ? "bg-primary text-primary-foreground" : "border hover:bg-accent"}`}
+										className={`rounded-sm px-3 py-1 text-[10px] font-mono uppercase tracking-wider transition-colors ${mode === "csv" ? "bg-foreground text-background shadow-sm" : "text-muted-foreground hover:bg-muted"}`}
 									>
 										CSV
 									</button>
@@ -190,68 +198,79 @@ export default function BatchPage() {
 
 								{mode === "json" ? (
 									<textarea
-										className="min-h-32 w-full rounded-md border bg-background px-3 py-2 font-mono text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+										className="min-h-40 w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-[12px] text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
 										value={jsonInput}
 										onChange={(e) => setJsonInput(e.target.value)}
 									/>
 								) : (
-									<div className="space-y-1">
+									<div className="space-y-3 rounded-md border border-dashed border-hairline p-8 text-center bg-muted/10">
 										<input
 											type="file"
 											accept=".csv"
+											id="csv-upload"
 											onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
-											className="w-full text-sm"
+											className="sr-only"
 										/>
-										<p className="text-muted-foreground text-xs">
-											CSV com coluna "to" na primeira linha
-										</p>
+										<label htmlFor="csv-upload" className="cursor-pointer group">
+											<div className="font-mono text-[11px] text-muted-foreground uppercase mb-2 group-hover:text-foreground transition-colors">
+												{csvFile ? csvFile.name : "Select CSV source file"}
+											</div>
+											<div className="text-[10px] text-muted-foreground opacity-40">
+												CSV must contain "to" column in first row
+											</div>
+										</label>
 									</div>
 								)}
 							</div>
 
-							<Button type="submit" disabled={isSending} className="w-full">
-								{isSending ? "Enviando…" : "Enviar Lote"}
+							<Button type="submit" disabled={isSending} className="w-full font-mono text-[12px] uppercase tracking-wider">
+								{isSending ? "Processing Batch…" : "Execute Batch Send →"}
 							</Button>
 						</form>
 					</CardContent>
 				</Card>
 
 				{lastResult && (
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base">Resultado</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							<div className="grid grid-cols-3 gap-4 text-center">
-								<div className="rounded-lg border p-4">
-									<p className="font-bold text-2xl">{lastResult.total}</p>
-									<p className="text-muted-foreground text-sm">Total</p>
+					<div className="space-y-6">
+						<Kicker num="RES" label="Last Result" />
+						<Card className="border-hairline bg-muted/5 shadow-none">
+							<CardContent className="p-8 space-y-8">
+								<div className="grid grid-cols-3 gap-8">
+									<div className="space-y-1">
+										<p className="font-mono text-[10px] text-muted-foreground uppercase opacity-60">Total</p>
+										<p className="font-sans text-4xl font-medium">{lastResult.total}</p>
+									</div>
+									<div className="space-y-1">
+										<p className="font-mono text-[10px] text-green-500/80 uppercase opacity-60">Sent</p>
+										<p className="font-sans text-4xl font-medium text-green-500">{lastResult.sent}</p>
+									</div>
+									<div className="space-y-1">
+										<p className="font-mono text-[10px] text-red-500/80 uppercase opacity-60">Failed</p>
+										<p className="font-sans text-4xl font-medium text-red-500">{lastResult.failed}</p>
+									</div>
 								</div>
-								<div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950">
-									<p className="font-bold text-2xl text-green-700 dark:text-green-400">
-										{lastResult.sent}
-									</p>
-									<p className="text-green-600 text-sm dark:text-green-500">
-										Enviados
-									</p>
+
+								<div className="space-y-2">
+									<div className="flex justify-between font-mono text-[10px] uppercase opacity-60">
+										<span>Completion Rate</span>
+										<span>{Math.round((lastResult.sent / lastResult.total) * 100)}%</span>
+									</div>
+									<div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+										<div
+											className="h-full bg-primary transition-all duration-1000"
+											style={{ width: `${(lastResult.sent / lastResult.total) * 100}%` }}
+										/>
+									</div>
 								</div>
-								<div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950">
-									<p className="font-bold text-2xl text-red-700 dark:text-red-400">
-										{lastResult.failed}
-									</p>
-									<p className="text-red-600 text-sm dark:text-red-500">
-										Falhas
-									</p>
+
+								<div className="pt-4 border-t border-hairline">
+									<Button variant="outline" className="w-full font-mono text-[11px] uppercase tracking-wider opacity-60" onClick={() => window.location.reload()}>
+										Dismiss Result
+									</Button>
 								</div>
-							</div>
-							<div className="flex items-center gap-2">
-								<Badge variant="default">
-									{Math.round((lastResult.sent / lastResult.total) * 100)}% taxa
-									de sucesso
-								</Badge>
-							</div>
-						</CardContent>
-					</Card>
+							</CardContent>
+						</Card>
+					</div>
 				)}
 			</div>
 		</div>

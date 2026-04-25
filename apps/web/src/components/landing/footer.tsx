@@ -2,25 +2,48 @@ import { DWordmark } from "./logo";
 import { PulseDot } from "./pulse-dot";
 
 const FOOTER_COLS: ReadonlyArray<readonly [string, readonly string[]]> = [
-	["Product", ["Email", "SMS", "Push", "Journeys", "Templates", "Segments"]],
+	[
+		"Product",
+		[
+			{ label: "Email", href: "/" },
+			{ label: "SMS", href: "/" },
+			{ label: "Push", href: "/" },
+			{ label: "Journeys", href: "/" },
+			{ label: "Templates", href: "/" },
+			{ label: "Segments", href: "/" },
+		],
+	],
 	[
 		"Developers",
 		[
-			"Documentation",
-			"API reference",
-			"SDKs",
-			"Webhooks",
-			"Status",
-			"Changelog",
+			{ label: "Documentation", href: "/docs" },
+			{ label: "API reference", href: "/docs" },
+			{ label: "SDKs", href: "/docs" },
+			{ label: "Webhooks", href: "/docs" },
+			{ label: "Status", href: "/" },
+			{ label: "Changelog", href: "/changelog" },
 		],
 	],
 	[
 		"Company",
-		["About", "Customers", "Careers", "Security", "Privacy", "Terms"],
+		[
+			{ label: "About", href: "/about" },
+			{ label: "Customers", href: "/customers" },
+			{ label: "Careers", href: "/" },
+			{ label: "Security", href: "/" },
+			{ label: "Privacy", href: "/" },
+			{ label: "Terms", href: "/" },
+		],
 	],
 	[
 		"Resources",
-		["Blog", "Guides", "Deliverability", "Compliance", "Community"],
+		[
+			{ label: "Blog", href: "/" },
+			{ label: "Guides", href: "/" },
+			{ label: "Deliverability", href: "/" },
+			{ label: "Compliance", href: "/" },
+			{ label: "Community", href: "/" },
+		],
 	],
 ];
 
@@ -104,11 +127,11 @@ export function Footer() {
 						>
 							{items.map((it) => (
 								<a
-									key={it}
-									href="/"
+									key={it.label}
+									href={it.href}
 									style={{ color: "var(--foreground)", textDecoration: "none" }}
 								>
-									{it}
+									{it.label}
 								</a>
 							))}
 						</div>
