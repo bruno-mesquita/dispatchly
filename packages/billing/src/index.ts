@@ -206,7 +206,7 @@ export async function checkQuota(
 		subscription?.status === "past_due" || subscription?.status === "canceled"
 			? "free"
 			: (subscription?.plan ?? "free");
-	const plan = PLANS.find((p) => p.id === planId) ?? PLANS[0];
+	const plan = PLANS.find((p) => p.id === planId) ?? PLANS[0]!;
 	const limit = plan.limits[type] ?? 0;
 
 	if (limit === -1) return { allowed: true, remaining: -1 };

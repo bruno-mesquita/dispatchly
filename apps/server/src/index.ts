@@ -53,14 +53,16 @@ new Elysia()
 				return { error: "Unauthorized" };
 			}
 
-			const key = await auth.api.verifyApiKey({
-				headers: new Headers({ authorization: `Bearer ${apiKey}` }),
+			const keyResult = await auth.api.verifyApiKey({
+				body: { key: apiKey },
 			});
 
-			if (!key) {
+			if (!keyResult?.valid || !keyResult.key) {
 				set.status = 401;
 				return { error: "Invalid API Key" };
 			}
+
+			const ownerId = keyResult.key.referenceId;
 
 			try {
 				const results = await Promise.all(
@@ -72,7 +74,7 @@ new Elysia()
 								templateId: body.template,
 								variables: body.data,
 							},
-							key.userId,
+							ownerId,
 						),
 					),
 				);
@@ -93,7 +95,7 @@ new Elysia()
 			rateLimit: {
 				duration: 60000,
 				max: 1000,
-				generator: (req) => {
+				generator: (req: Request) => {
 					const authHeader = req.headers.get("authorization");
 					return authHeader?.split(" ")[1] || "anonymous";
 				},
