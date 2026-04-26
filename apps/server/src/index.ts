@@ -8,8 +8,6 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Elysia, t } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
 
-const authInstance = await auth;
-
 const origins = env.CORS_ORIGIN.split(",").map((o) => o.trim());
 
 new Elysia()
@@ -33,7 +31,7 @@ new Elysia()
 	.all("/api/auth/*", async (context) => {
 		const { request, status } = context;
 		if (["POST", "GET"].includes(request.method)) {
-			return authInstance.handler(request);
+			return auth.handler(request);
 		}
 		return status(405);
 	})
@@ -55,7 +53,7 @@ new Elysia()
 				return { error: "Unauthorized" };
 			}
 
-			const key = await authInstance.api.verifyApiKey({
+			const key = await auth.api.verifyApiKey({
 				headers: new Headers({ authorization: `Bearer ${apiKey}` }),
 			});
 
