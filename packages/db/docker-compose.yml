@@ -19,7 +19,7 @@ services:
       retries: 5
     restart: unless-stopped
 
-redis:
+  redis:
     image: redis:7-alpine
     container_name: dispatchly-redis
     ports:

@@ -10,7 +10,7 @@
 		}
 	},
 	"scripts": {
-		"db:start": "docker compose up -d mongodb",
+		"db:start": "docker compose up -d",
 		"db:redis:start": "docker compose up -d redis",
 		"db:redis:stop": "docker compose stop redis",
 		"db:start:all": "docker compose up -d",

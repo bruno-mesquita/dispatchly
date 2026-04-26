@@ -33,7 +33,6 @@ const organizationSchema = new Schema(
 	{ collection: "organization", timestamps: true },
 );
 
-organizationSchema.index({ slug: 1 }, { unique: true });
 organizationSchema.index({ ownerId: 1 });
 
 export const Organization = model("Organization", organizationSchema);
