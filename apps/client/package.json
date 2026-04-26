@@ -11,11 +11,11 @@
 		"desktop:build": "tauri build"
 	},
 	"dependencies": {
+		"@better-auth/stripe": "catalog:",
 		"@dispatchly/api": "workspace:*",
 		"@dispatchly/auth": "workspace:*",
 		"@dispatchly/env": "workspace:*",
 		"@dispatchly/ui": "workspace:*",
-		"@better-auth/stripe": "catalog:",
 		"@tanstack/react-form": "^1.28.0",
 		"@tanstack/react-query": "^5.90.12",
 		"@trpc/client": "catalog:",
@@ -29,6 +29,7 @@
 		"next-themes": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
+		"react-icons": "^5.6.0",
 		"sonner": "catalog:",
 		"zod": "catalog:"
 	},

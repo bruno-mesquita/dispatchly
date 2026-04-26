@@ -3,6 +3,7 @@ import { Input } from "@dispatchly/ui/components/input";
 import { Label } from "@dispatchly/ui/components/label";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -152,6 +153,44 @@ export default function SignUpForm({
 					)}
 				</form.Subscribe>
 			</form>
+
+			<div className="relative my-4">
+				<div className="absolute inset-0 flex items-center">
+					<span className="w-full border-t" />
+				</div>
+				<div className="relative flex justify-center text-xs uppercase">
+					<span className="bg-background px-2 text-muted-foreground">
+						Or continue with
+					</span>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-2 gap-3">
+				<Button
+					type="button"
+					variant="outline"
+					onClick={() =>
+						authClient.signIn.social({
+							provider: "google",
+							callbackURL: "/dashboard",
+						})
+					}
+				>
+					<FaGoogle className="mr-2 h-4 w-4" /> Google
+				</Button>
+				<Button
+					type="button"
+					variant="outline"
+					onClick={() =>
+						authClient.signIn.social({
+							provider: "github",
+							callbackURL: "/dashboard",
+						})
+					}
+				>
+					<FaGithub className="mr-2 h-4 w-4" /> GitHub
+				</Button>
+			</div>
 
 			<div className="mt-4 text-center">
 				<Button
