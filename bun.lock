@@ -211,6 +211,7 @@
       },
       "devDependencies": {
         "@dispatchly/config": "workspace:*",
+        "@types/bun": "catalog:",
         "typescript": "^5",
       },
     },

@@ -4,7 +4,7 @@ import {
 	Subscription as SubscriptionModel,
 } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
-import type { Stripe } from "stripe";
+import type Stripe from "stripe";
 
 export const PLANS = [
 	{
