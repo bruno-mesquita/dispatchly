@@ -10,7 +10,7 @@ import { rateLimit } from "elysia-rate-limit";
 
 const origins = env.CORS_ORIGIN.split(",").map((o) => o.trim());
 
-new Elysia()
+export default new Elysia()
 	.use(
 		cors({
 			origin: origins,
