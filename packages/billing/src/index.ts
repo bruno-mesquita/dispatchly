@@ -1,13 +1,10 @@
+import { stripeClient as stripe } from "@dispatchly/auth/stripe";
 import {
 	Organization as OrganizationModel,
 	Subscription as SubscriptionModel,
 } from "@dispatchly/db";
 import { env } from "@dispatchly/env/server";
-import Stripe from "stripe";
-
-const stripe = env.STRIPE_SECRET_KEY
-	? new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2026-04-22.dahlia" })
-	: null;
+import type { Stripe } from "stripe";
 
 export const PLANS = [
 	{

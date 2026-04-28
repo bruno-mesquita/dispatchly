@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"@dispatchly/db": "workspace:*",
+		"@dispatchly/auth": "workspace:*",
 		"stripe": "catalog:",
 		"bullmq": "^5.76.2",
 		"ioredis": "^5.10.1",
