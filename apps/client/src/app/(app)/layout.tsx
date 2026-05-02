@@ -6,6 +6,7 @@ const NAV = [
 	{ href: "/dashboard", label: "Overview", icon: "□" },
 	{ href: "/dashboard/send", label: "Dispatches", icon: "→" },
 	{ href: "/dashboard/batch", label: "Batch Ops", icon: "▤" },
+	{ href: "/dashboard/journeys", label: "Journeys", icon: "◈" },
 	{ href: "/dashboard/templates", label: "Templates", icon: "◇" },
 	{ href: "/dashboard/logs", label: "Logs", icon: "☰" },
 	{ href: "/dashboard/webhooks", label: "Webhooks", icon: "⚓" },
@@ -28,7 +29,7 @@ export default function AppLayout({
 						{NAV.map((n) => (
 							<Link
 								key={n.href}
-								href={n.href as any}
+								href={n.href}
 								className="flex items-center justify-between rounded-md px-3 py-2 font-mono text-[12.5px] transition-colors hover:bg-accent hover:text-accent-foreground"
 							>
 								<span>{n.label}</span>

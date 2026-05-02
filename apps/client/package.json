@@ -21,6 +21,7 @@
 		"@trpc/client": "catalog:",
 		"@trpc/server": "catalog:",
 		"@trpc/tanstack-react-query": "^11.13.4",
+		"@xyflow/react": "^12.10.2",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"better-auth": "catalog:",
 		"dotenv": "catalog:",
