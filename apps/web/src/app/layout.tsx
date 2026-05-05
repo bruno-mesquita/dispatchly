@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import {
 	Geist,
@@ -51,6 +52,7 @@ export default function RootLayout({
 		>
 			<body className="antialiased">
 				<Providers>{children}</Providers>
+				<Analytics />
 			</body>
 		</html>
 	);
